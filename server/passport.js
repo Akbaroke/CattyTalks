@@ -1,5 +1,6 @@
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import passport from 'passport';
+import addUser from './services/addUser.js';
 
 passport.use(
   new GoogleStrategy(
@@ -11,6 +12,7 @@ passport.use(
     },
     function (accessToken, refreshToken, profile, callback) {
       callback(null, profile);
+      addUser(profile);
     }
   )
 );

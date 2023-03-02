@@ -1,6 +1,8 @@
 import passport from 'passport';
+import dotenv from 'dotenv';
+dotenv.config();
 
-export const loginSuccess = (req, res) => {
+export const loginSuccess = async (req, res) => {
   if (req.user) {
     res.status(200).json({
       error: false,
