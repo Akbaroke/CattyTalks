@@ -4,6 +4,7 @@ import express from 'express';
 import cors from 'cors';
 import passport from 'passport';
 import authRoute from './routes/auth.js';
+import roomRoute from './routes/room.js';
 import cookieSession from 'cookie-session';
 import db from './config/database.js';
 import './passport.js';
@@ -37,6 +38,7 @@ app.use(
 );
 
 app.use('/auth', authRoute);
+app.use('/room', roomRoute);
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => console.log(`Listenting on port ${port}...`));

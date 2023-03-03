@@ -1,0 +1,100 @@
+$breakpoint-table: 768px;
+$breakpoint-phone: 480px;
+
+.cardListRoom {
+  width: 96%;
+  height: 76px;
+  background-color: #f9f9f9;
+  border-radius: 14px;
+  border: 1px solid #000;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 12px;
+  position: relative;
+
+  div:nth-child(1) {
+    width: 53px;
+    height: 53px;
+    margin: 0;
+    border-radius: 100%;
+    background-color: #49BFB7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+
+    svg {
+      width: 25px;
+      height: 25px;
+      color: #fff;
+    }
+  }
+
+  div:nth-child(2) {
+    width: auto;
+    background-color: transparent;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: start;
+    position: relative;
+
+    h1 {
+      font-size: 16px;
+      font-weight: 500;
+      color: #454545;
+    }
+
+    h2 {
+      font-size: 13px;
+      font-weight: 400;
+      color: #454545;
+    }
+  }
+}
+
+.dobleLayer {
+  width: 98%;
+  height: 70px;
+  background-color: #E0E0E0;
+  filter: blur(5px);
+  border-radius: 14px;
+  border: 1px solid #000;
+  position: absolute;
+  bottom: -7px;
+}
+
+@media (max-width: $breakpoint-phone){
+  .dobleLayer {
+    width: 100%;
+    filter: blur(0px);
+  }
+}
+
+
+.layerContainer{
+  position: relative;
+  width: 100%;
+  height: 76px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.info_room{
+  position: absolute;
+  font-size: 12px;
+  bottom: 10px;
+  right: 10px;
+}
+
+.btn_sett{
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  color: #49BFB7;
+  right: 8px;
+  top: 9px;
+}

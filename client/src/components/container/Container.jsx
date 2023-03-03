@@ -1,15 +1,17 @@
 import React from 'react';
-import './Container.scss';
+import style from './style.module.scss';
 
-export default function Container({ children }) {
+export default function Container({ children, disable = false }) {
   return (
-    <div className="container">
-      <div>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
+    <div className={style.container}>
+      {!disable && (
+        <div className={style.accessories}>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      )}
       <div>{children}</div>
     </div>
   );
