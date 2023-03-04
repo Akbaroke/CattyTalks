@@ -37,6 +37,7 @@ app.use(
   })
 );
 
+app.use(express.json());
 app.use('/auth', authRoute);
 app.use('/room', roomRoute);
 

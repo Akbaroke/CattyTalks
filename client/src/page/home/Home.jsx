@@ -1,39 +1,47 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import style from './style.module.scss';
 import Container from '../../components/container/Container';
 import { IconLogout, IconPlus } from '@tabler/icons-react';
 import CardListRoom from '../../components/card/cardListRoom/CardListRoom';
 import axios from '../../api';
 import { useSelector } from 'react-redux';
-
-const listRoom = [
-  {
-    code: '546879',
-    name: 'Akbar Room',
-    hostName: 'Muhammad Akbar',
-    time: '3 hours ago',
-  },
-  {
-    code: '546879',
-    name: 'Akbar Room',
-    hostName: 'Muhammad Akbar',
-    time: '3 hours ago',
-  },
-];
+import CreateAndJoin from '../../components/createjoin/CreateAndJoin';
 
 export default function Home() {
   const { id } = useSelector((state) => state.user);
+  const [listRoom, setListRoom] = useState([]);
+  const [openFrom, setOpenFrom] = useState(false);
+
+  const getDataListRoom = async () => {
+    if (id !== null) {
+      try {
+        const { data } = await axios.get(`/room/${id}`);
+        setListRoom(data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    getDataListRoom();
+  }, [id]);
+
   const handleLogout = () => {
     window.open(`${import.meta.env.VITE_APP_URL}/auth/logout`, '_self');
   };
 
   const handleAddList = async () => {
-    const { data } = await axios.get(`/room/create/${id}`);
+    const { data } = await axios.post(`/room/create/${id}`, {
+      name: 'Akbar Room',
+    });
+    getDataListRoom();
     console.log(data);
   };
 
   return (
     <Container disable>
+      {openFrom && <CreateAndJoin />}
       <div className={style.home}>
         <div className={style.header}>
           <div>
@@ -41,7 +49,7 @@ export default function Home() {
             <IconLogout onClick={handleLogout} />
           </div>
           <div>
-            <p>0 of 3</p>
+            <p>{listRoom.length} of 3</p>
           </div>
         </div>
         <div className={style.body}>
@@ -64,8 +72,8 @@ export default function Home() {
             </div>
           )}
         </div>
-        <div className={style.btn_add} onClick={handleAddList}>
-          <div>
+        <div className={style.btn_add} onClick={() => setOpenFrom(!openFrom)}>
+          <div className={openFrom ? style.rotate : null}>
             <IconPlus />
           </div>
         </div>

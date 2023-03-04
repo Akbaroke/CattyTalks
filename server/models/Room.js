@@ -3,22 +3,24 @@ import db from '../config/database.js';
 
 const { DataTypes } = Sequelize;
 
-const User = db.define(
-  'tb_user',
+const Room = db.define(
+  'tb_room',
   {
     id: {
       type: DataTypes.STRING,
       primaryKey: true,
       autoIncrement: false,
     },
+    id_user: {
+      type: DataTypes.STRING,
+    },
+    code: {
+      type: DataTypes.STRING,
+    },
     name: {
       type: DataTypes.STRING,
     },
-    email: {
-      type: DataTypes.STRING,
-      unique: true,
-    },
-    profile_picture: {
+    time: {
       type: DataTypes.STRING,
     },
   },
@@ -28,4 +30,4 @@ const User = db.define(
   }
 );
 
-export default User;
+export default Room;

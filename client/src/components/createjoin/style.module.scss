@@ -1,0 +1,117 @@
+.CreateAndJoin{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #3b3b3b5d;
+  z-index: 4;
+  backdrop-filter: blur(2px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .card{
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+  }
+}
+
+.nav{
+  background-color: #F8F7FC;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding: 6px;
+  border: 1px solid #000;
+  border-radius: 50px;
+  cursor: pointer;
+  
+  div{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: .5mm;
+  }
+
+  .active{
+    background-color: #49BFB7;
+    height: 35px;
+    border-radius: 35px;
+    border: 1px solid #000;
+    color: #fff;
+  }
+}
+
+.body{
+  padding: 10px;
+  min-width: 200px;
+}
+
+.crete{
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  .fieldInput{
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    font-weight: 500;
+    background-color: #F8F7FC;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #000;
+
+    label {
+      font-size: 11px;
+      position: relative;
+      top: -5px;
+      left: -4px;
+    }
+    
+    input {
+      border: none;
+      outline: none;
+      background-color: transparent;
+      text-align: center;
+    }
+  }
+
+  .checkbox{
+    font-size: 13px;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    gap: 5px;
+    padding: 0 5px;
+    cursor: pointer;
+
+    input {
+      margin: 0;
+      width: 15px;
+      height: 15px;
+    }
+  }
+
+  button {
+    border: none;
+    border-radius: 20px;
+    color: #fff;
+    padding: 10px;
+    transition: all .3s;
+    background-color: #cecece;
+  }
+
+  .btnValid {
+    cursor: pointer;
+    background-color: #49BFB7;
+    &:hover{
+      transform: scale(1.04, 1.04);
+    }
+  }
+}
+
+
