@@ -89,3 +89,22 @@ export const deleteRoom = async (req, res) => {
     res.status(400).json({ msg: 'Delete room failed' });
   }
 };
+
+
+export const checkDuplicateRoom = async (req, res) => {
+  const { userId } = req.params;
+  const { code } = req.body;
+
+  try {
+    const check = await Room.findOne({
+      where: {
+        id_user: userId,
+        code: code,
+      },
+    });
+    if (!check) return res.status(201).json({ msg: 'Code is ready' });
+    throw new Error('Code is already');
+  } catch (error) {
+    console.log(error);
+  }
+};

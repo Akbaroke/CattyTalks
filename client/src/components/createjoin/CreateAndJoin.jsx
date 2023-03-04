@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import style from './style.module.scss';
 import numberOnly from '../../utils/numberOnly';
+import { useSelector } from 'react-redux';
+import axios from '../../api';
 // import { IconPlus } from '@tabler/icons-react';
 
 export default function CreateAndJoin() {
@@ -24,14 +26,19 @@ export default function CreateAndJoin() {
 }
 
 const FormCrete = () => {
+  const { id } = useSelector((state) => state.user);
   const [name, setName] = useState('');
   const [code, setCode] = useState('');
   const [isRandom, setIsRandom] = useState(false);
   const [isValidate, setIsValidate] = useState(false);
 
-  const onsubmit = (e) => {
+  const onsubmit = async (e) => {
     e.preventDefault();
-    console.log('submit');
+    const { data } = await axios.post(`/room/create/${id}`, {
+      name: name,
+      code: isRandom ? undefined : code,
+    });
+    console.log(data);
   };
 
   useEffect(() => {

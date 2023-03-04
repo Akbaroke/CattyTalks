@@ -31,14 +31,6 @@ export default function Home() {
     window.open(`${import.meta.env.VITE_APP_URL}/auth/logout`, '_self');
   };
 
-  const handleAddList = async () => {
-    const { data } = await axios.post(`/room/create/${id}`, {
-      name: 'Akbar Room',
-    });
-    getDataListRoom();
-    console.log(data);
-  };
-
   return (
     <Container disable>
       {openFrom && <CreateAndJoin />}
