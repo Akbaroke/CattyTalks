@@ -6,6 +6,6 @@ const router = Router();
 router.post('/create/:userId', cekUserId, createRoom);
 router.get('/:userId', cekUserId, getRoom);
 router.delete('/', deleteRoom);
-router.get('/check/:userId', cekUserId, checkDuplicateRoom);
+router.post('/check/:userId', cekUserId, checkDuplicateRoom);
 
 export default router;

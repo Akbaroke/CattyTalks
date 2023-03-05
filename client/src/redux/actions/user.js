@@ -10,6 +10,3 @@ export const setLogin = (id, email, name, profilePicture) => ({
   },
 });
 
-export const setLogout = () => ({
-  type: ActionType.SET_LOGOUT,
-});

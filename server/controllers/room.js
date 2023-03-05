@@ -102,8 +102,8 @@ export const checkDuplicateRoom = async (req, res) => {
         code: code,
       },
     });
-    if (!check) return res.status(201).json({ msg: 'Code is ready' });
-    throw new Error('Code is already');
+    if (!check) return res.status(201).json({ msg: 'Code is available.' });
+    res.json({ msg: 'Code is already' });
   } catch (error) {
     console.log(error);
   }

@@ -76,7 +76,7 @@
   bottom: 120px;
 
   .rotate {
-    transform: rotate(225deg);
+    transform: translateY(-62vh) translateX(5px)  rotate(225deg);
     transition: all .3s;
   }
 

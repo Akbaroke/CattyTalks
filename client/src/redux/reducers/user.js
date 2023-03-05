@@ -17,9 +17,7 @@ const reducerUser = (state = initState, action) => {
         name: action.payload.name,
         email: action.payload.email,
         profilePicture: action.payload.profilePicture,
-      };
-    case ActionType.SET_LOGOUT:
-      return initState;
+      }
     default:
       return state;
   }
