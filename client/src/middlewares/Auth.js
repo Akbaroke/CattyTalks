@@ -1,19 +1,18 @@
-import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react'
+import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 function Auth({ children }) {
-  const { isAuth } = useSelector((state) => state.user);
-  const navigate = useNavigate();
+  const { isAuth } = useSelector(state => state.user)
+  const navigate = useNavigate()
 
   useEffect(() => {
-    if (isAuth) {
-      navigate('/');
-    } else {
-      navigate('/login');
+    if (!isAuth) {
+      navigate('/login')
     }
-  }, [isAuth]);
-  return children;
+  }, [isAuth, navigate])
+
+  return isAuth ? children : null
 }
 
-export default Auth;
+export default Auth

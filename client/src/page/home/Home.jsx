@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import style from './style.module.scss'
 import Container from '../../components/container/Container'
 import { IconLogout, IconPlus } from '@tabler/icons-react'
 import CardListRoom from '../../components/card/cardListRoom/CardListRoom'
 import CreateAndJoin from '../../components/createjoin/CreateAndJoin'
 import { useSWRContext } from '../../swr/swr-context'
+import io from 'socket.io-client'
 
 export default function Home() {
   const { room } = useSWRContext()
@@ -15,6 +16,12 @@ export default function Home() {
       `${import.meta.env.VITE_APP_URL}/auth/logout`,
       '_self'
     )
+  }
+
+  const connectServer = () => {
+    const socket = io.connect(import.meta.env.VITE_APP_URL)
+    socket.emit('join_room', '1')
+    console.log(socket)
   }
 
   return (
@@ -54,7 +61,10 @@ export default function Home() {
         </div>
         <div
           className={style.btn_add}
-          onClick={() => setOpenFrom(!openFrom)}>
+          onClick={() => {
+            setOpenFrom(!openFrom)
+            connectServer()
+          }}>
           <div className={openFrom ? style.rotate : null}>
             <IconPlus />
           </div>

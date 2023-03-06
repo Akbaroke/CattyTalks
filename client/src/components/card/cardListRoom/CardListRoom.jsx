@@ -7,8 +7,10 @@ import useDetectOutsideClick from '../../../hooks/useDetectOutsideClick';
 import axios from '../../../api';
 import { useSWRConfig } from 'swr'
 import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 const CardListRoom = ({ data }) => {
+  const navigate = useNavigate()
   const { id } = useSelector(state => state.user)
   const { mutate } = useSWRConfig()
   const dropdownRef = useRef(null)
@@ -25,8 +27,14 @@ const CardListRoom = ({ data }) => {
     console.log(data)
   }
 
+  const handleClick = () => {
+    navigate(`/chat/${data.code}`)
+  }
+
   return (
-    <div className={style.layerContainer}>
+    <div
+      className={style.layerContainer}
+      onClick={handleClick}>
       <div className={style.dobleLayer}></div>
       <div className={style.cardListRoom}>
         <div className={style.icon}>

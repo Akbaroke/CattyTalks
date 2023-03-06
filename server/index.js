@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
+import http from 'http';
 import cors from 'cors';
 import passport from 'passport';
 import authRoute from './routes/auth.js';
@@ -8,6 +9,7 @@ import roomRoute from './routes/room.js';
 import cookieSession from 'cookie-session';
 import db from './config/database.js';
 import './passport.js';
+import initSocket from './socket.js';
 
 const app = express();
 
@@ -31,7 +33,7 @@ app.use(passport.session());
 
 app.use(
   cors({
-    origin: 'http://localhost:3000',
+    origin: [process.env.CLIENT_URL, 'http://127.0.0.1:3000'],
     methods: 'GET,POST,PUT,DELETE',
     credentials: true,
   })
@@ -41,5 +43,8 @@ app.use(express.json());
 app.use('/auth', authRoute);
 app.use('/room', roomRoute);
 
+const server = http.createServer(app);
+initSocket(server);
+
 const port = process.env.PORT || 8080;
-app.listen(port, () => console.log(`Listenting on port ${port}...`));
+server.listen(port, () => console.log(`Listenting on port ${port}...`));
