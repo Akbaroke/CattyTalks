@@ -93,6 +93,7 @@ $breakpoint-phone: 480px;
 
 .btn_sett{
   position: absolute;
+  display: block;
   width: 25px;
   height: 25px;
   color: #49BFB7;
@@ -102,6 +103,7 @@ $breakpoint-phone: 480px;
   padding: 4px;
   cursor: pointer;
   transition: all .3s;
+
   &:hover{
     background-color: #49BFB7;
     color: #fff;

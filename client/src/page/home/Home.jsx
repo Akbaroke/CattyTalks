@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import style from './style.module.scss'
 import Container from '../../components/container/Container'
 import { IconLogout, IconPlus } from '@tabler/icons-react'
 import CardListRoom from '../../components/card/cardListRoom/CardListRoom'
 import CreateAndJoin from '../../components/createjoin/CreateAndJoin'
 import { useSWRContext } from '../../swr/swr-context'
-import io from 'socket.io-client'
 
 export default function Home() {
   const { room } = useSWRContext()
@@ -18,10 +17,8 @@ export default function Home() {
     )
   }
 
-  const connectServer = () => {
-    const socket = io.connect(import.meta.env.VITE_APP_URL)
-    socket.emit('join_room', '1')
-    console.log(socket)
+  const reloadPage = () => {
+    location.reload()
   }
 
   return (
@@ -30,7 +27,20 @@ export default function Home() {
       <div className={style.home}>
         <div className={style.header}>
           <div>
-            <h1>History Room</h1>
+            <div
+              className={style.logo}
+              onClick={reloadPage}>
+              <img
+                src="https://cdn.discordapp.com/attachments/1044968598587838586/1082668734986063883/logo_3_1asas.png"
+                alt="Catty Talks"
+                width={130}
+              />
+              <img
+                src="https://cdn.discordapp.com/attachments/1044968598587838586/1082669520201723914/logo_1.png"
+                alt="Catty Talks"
+                width={40}
+              />
+            </div>
             <IconLogout onClick={handleLogout} />
           </div>
           <div>
@@ -61,10 +71,7 @@ export default function Home() {
         </div>
         <div
           className={style.btn_add}
-          onClick={() => {
-            setOpenFrom(!openFrom)
-            connectServer()
-          }}>
+          onClick={() => setOpenFrom(!openFrom)}>
           <div className={openFrom ? style.rotate : null}>
             <IconPlus />
           </div>

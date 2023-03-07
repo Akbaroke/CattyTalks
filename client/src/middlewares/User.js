@@ -8,18 +8,24 @@ export default function User({ children }) {
   const { isAuth } = useSelector(state => state.user)
 
   const getAuthInfo = async () => {
-    const { data } = await axios.get(
-      `${import.meta.env.VITE_APP_URL}/auth/login/success`,
-      { withCredentials: true }
-    )
-    dispatch(
-      setLogin(
-        data.user._json.sub,
-        data.user._json.name,
-        data.user._json.email,
-        data.user._json.picture
+    try {
+      const { data } = await axios.get(
+        `${
+          import.meta.env.VITE_APP_URL
+        }/auth/login/success`,
+        { withCredentials: true }
       )
-    )
+      dispatch(
+        setLogin(
+          data.user._json.sub,
+          data.user._json.name,
+          data.user._json.email,
+          data.user._json.picture
+        )
+      )
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   useEffect(() => {

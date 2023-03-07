@@ -16,10 +16,10 @@
     align-items: center;
     padding: 0 5px;
 
-    h1 {
-      font-size: 16px;
-      font-weight: 600;
-      color: #454545;
+    .logo{
+      display: flex;
+      gap: 10px;
+      cursor: pointer;
     }
 
     svg {

@@ -33,7 +33,7 @@ app.use(passport.session());
 
 app.use(
   cors({
-    origin: [process.env.CLIENT_URL, 'http://127.0.0.1:3000'],
+    origin: process.env.CLIENT_URL,
     methods: 'GET,POST,PUT,DELETE',
     credentials: true,
   })

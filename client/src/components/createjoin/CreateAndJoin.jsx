@@ -80,14 +80,17 @@ const FormCrete = () => {
     if (name.length > 3 && name.length < 20) {
       if (isRandom) {
         setIsValidate(true)
+        console.log('tes')
         setCode('')
+      } else {
+        code.length === 6
+          ? handlePressCode(code)
+          : setIsValidate(false)
       }
     } else {
       setIsValidate(false)
     }
-    code.length === 6
-      ? handlePressCode(code)
-      : setIsValidate(false)
+    
     isRandom && setCode('')
   }, [name, code, isRandom])
 

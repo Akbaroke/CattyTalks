@@ -3,8 +3,8 @@ import React, { useRef } from 'react';
 import style from './stye.module.scss';
 import { countdownTime } from '../../../utils/countdownTimestamp.js';
 import useCurrentDate from '../../../hooks/useCurrentDate.js';
-import useDetectOutsideClick from '../../../hooks/useDetectOutsideClick';
-import axios from '../../../api';
+import useDetectOutsideClick from '../../../hooks/useDetectOutsideClick.js'
+import axios from '../../../api'
 import { useSWRConfig } from 'swr'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -27,16 +27,16 @@ const CardListRoom = ({ data }) => {
     console.log(data)
   }
 
-  const handleClick = () => {
+  const goToChatRoom = e => {
     navigate(`/chat/${data.code}`)
   }
 
   return (
-    <div
-      className={style.layerContainer}
-      onClick={handleClick}>
+    <div className={style.layerContainer}>
       <div className={style.dobleLayer}></div>
-      <div className={style.cardListRoom}>
+      <div
+        className={style.cardListRoom}
+        onClick={goToChatRoom}>
         <div className={style.icon}>
           <IconMessageDots />
         </div>
@@ -53,7 +53,10 @@ const CardListRoom = ({ data }) => {
         <IconDotsVertical
           ref={dropdownRef}
           className={style.btn_sett}
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={e => {
+            e.stopPropagation()
+            setIsOpen(!isOpen)
+          }}
         />
         <div className={style.option}>
           <div
@@ -63,9 +66,10 @@ const CardListRoom = ({ data }) => {
             <span>setting</span>
             <span
               className={style.delete}
-              onClick={() =>
+              onClick={e => {
+                e.stopPropagation()
                 handleDelete(data.id, data.id_user)
-              }>
+              }}>
               delete
             </span>
           </div>
