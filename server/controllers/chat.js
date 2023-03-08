@@ -7,7 +7,7 @@ import User from '../models/User.js';
 dotenv.config();
 
 export const getAllMessages = async (req, res) => {
-  const { room } = req.body;
+  const { room } = req.params;
 
   try {
     // get idRoom
