@@ -6,6 +6,7 @@ import cors from 'cors';
 import passport from 'passport';
 import authRoute from './routes/auth.js';
 import roomRoute from './routes/room.js';
+import chatRoute from './routes/chat.js';
 import cookieSession from 'cookie-session';
 import db from './config/database.js';
 import './passport.js';
@@ -42,6 +43,7 @@ app.use(
 app.use(express.json());
 app.use('/auth', authRoute);
 app.use('/room', roomRoute);
+app.use('/chat', chatRoute);
 
 const server = http.createServer(app);
 initSocket(server);
