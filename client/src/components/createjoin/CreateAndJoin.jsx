@@ -26,10 +26,77 @@ export default function CreateAndJoin() {
           </div>
         </div>
         <div className={style.body}>
-          {nav === 'create' ? <FormCrete /> : null}
+          {nav === 'create' ? <FormCrete /> : <FromJoin />}
         </div>
       </div>
     </div>
+  )
+}
+
+const FromJoin = () => {
+  const [code, setCode] = useState('')
+  const { id } = useSelector(state => state.user)
+  const [isForm, setIsForm] = useState(false)
+  const [loadingCode, setLoadingCode] = useState(false)
+  const [msg, setMsg] = useState('')
+
+  const handlePressCode = async code => {
+    setLoadingCode(true)
+    try {
+      const res = await axios.post(`/room/check/${id}`, {
+        code: code,
+      })
+      if (res.status === 200) {
+        setIsForm(false)
+      }
+      setMsg(res.data.msg)
+    } catch (error) {
+      console.log(error)
+    }
+    setLoadingCode(false)
+  }
+
+  useEffect(() => {
+    code.length === 6 && handlePressCode(code)
+  }, [code])
+
+  const onsubmit = () => {
+    console.log('submit')
+  }
+
+  return (
+    <form className={style.join}>
+      <div className={style.fieldInput}>
+        {code && <label htmlFor="code">Code room</label>}
+        <input
+          type="text"
+          name="code"
+          maxLength={6}
+          placeholder="Code (6 number)"
+          value={code}
+          onKeyDown={e => numberOnly(e)}
+          onChange={e => setCode(e.target.value)}
+        />
+      </div>
+      {code.length === 6 ? (
+        loadingCode ? (
+          <p className={style.labelLoading}>
+            Check code...
+          </p>
+        ) : isForm ? (
+          <p className={style.labelValid}>{msg}</p>
+        ) : (
+          <p className={style.labelInValid}>{msg}</p>
+        )
+      ) : null}
+      <button
+        onClick={isForm ? onsubmit : null}
+        className={
+          isForm ? style.btnValid : style.btnDisable
+        }>
+        Join
+      </button>
+    </form>
   )
 }
 
@@ -39,8 +106,9 @@ const FormCrete = () => {
   const [name, setName] = useState('')
   const [code, setCode] = useState('')
   const [isRandom, setIsRandom] = useState(false)
-  const [isValidate, setIsValidate] = useState(false)
+  const [isForm, setIsForm] = useState(false)
   const [loadingCode, setLoadingCode] = useState(false)
+  const [isCodeValid, setIsCodeValid] = useState(false)
   const [msg, setMsg] = useState('')
 
   const onsubmit = async e => {
@@ -53,6 +121,7 @@ const FormCrete = () => {
       }
     )
     mutate(`/room/${id}`)
+    setIsCodeValid(false)
     console.log(data)
   }
 
@@ -62,12 +131,10 @@ const FormCrete = () => {
       const res = await axios.post(`/room/check/${id}`, {
         code: code,
       })
-      if (res.status === 200) {
-        setIsValidate(false)
+      if (res.status === 201) {
+        setIsCodeValid(true)
       } else {
-        name.length > 3 &&
-          name.length < 20 &&
-          setIsValidate(true)
+        setIsCodeValid(false)
       }
       setMsg(res.data.msg)
     } catch (error) {
@@ -77,22 +144,24 @@ const FormCrete = () => {
   }
 
   useEffect(() => {
-    if (name.length > 3 && name.length < 20) {
-      if (isRandom) {
-        setIsValidate(true)
-        console.log('tes')
-        setCode('')
-      } else {
-        code.length === 6
-          ? handlePressCode(code)
-          : setIsValidate(false)
-      }
-    } else {
-      setIsValidate(false)
+    if (
+      isCodeValid &&
+      name.length > 3 &&
+      name.length < 20
+    ) {
+      setIsForm(true)
     }
-    
-    isRandom && setCode('')
-  }, [name, code, isRandom])
+  }, [name, isCodeValid, code])
+
+  useEffect(() => {
+    if (isRandom) {
+      isCodeValid(true)
+      setCode('')
+    }
+    if (code.length === 6) {
+      handlePressCode(code)
+    }
+  }, [isRandom, code])
 
   return (
     <form className={style.crete}>
@@ -126,7 +195,7 @@ const FormCrete = () => {
           <p className={style.labelLoading}>
             Check code...
           </p>
-        ) : isValidate ? (
+        ) : isCodeValid ? (
           <p className={style.labelValid}>{msg}</p>
         ) : (
           <p className={style.labelInValid}>{msg}</p>
@@ -144,9 +213,9 @@ const FormCrete = () => {
         <label htmlFor="random">Random code</label>
       </div>
       <button
-        onClick={isValidate ? onsubmit : null}
+        onClick={isForm ? onsubmit : null}
         className={
-          isValidate ? style.btnValid : style.btnDisable
+          isForm ? style.btnValid : style.btnDisable
         }>
         Create
       </button>

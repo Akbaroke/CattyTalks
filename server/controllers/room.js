@@ -92,13 +92,11 @@ export const deleteRoom = async (req, res) => {
 
 
 export const checkDuplicateRoom = async (req, res) => {
-  const { userId } = req.params;
   const { code } = req.body;
 
   try {
     const check = await Room.findOne({
       where: {
-        id_user: userId,
         code: code,
       },
     });
