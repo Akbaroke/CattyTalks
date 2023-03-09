@@ -43,10 +43,12 @@ const FromJoin = () => {
   const handlePressCode = async code => {
     setLoadingCode(true)
     try {
-      const res = await axios.post(`/room/check/${id}`, {
-        code: code,
-      })
+      const res = await axios.get(
+        `/room/check/${id}/${code}`
+      )
       if (res.status === 200) {
+        setIsForm(true)
+      } else {
         setIsForm(false)
       }
       setMsg(res.data.msg)
@@ -57,7 +59,9 @@ const FromJoin = () => {
   }
 
   useEffect(() => {
-    code.length === 6 && handlePressCode(code)
+    code.length === 6
+      ? handlePressCode(code)
+      : setIsForm(false)
   }, [code])
 
   const onsubmit = () => {
@@ -78,18 +82,21 @@ const FromJoin = () => {
           onChange={e => setCode(e.target.value)}
         />
       </div>
-      {code.length === 6 ? (
-        loadingCode ? (
-          <p className={style.labelLoading}>
-            Check code...
-          </p>
-        ) : isForm ? (
-          <p className={style.labelValid}>{msg}</p>
-        ) : (
-          <p className={style.labelInValid}>{msg}</p>
-        )
-      ) : null}
+      <span>
+        {code.length === 6 ? (
+          loadingCode ? (
+            <p className={style.labelLoading}>
+              Check code...
+            </p>
+          ) : isForm ? (
+            <p className={style.labelValid}>{msg}</p>
+          ) : (
+            <p className={style.labelInValid}>{msg}</p>
+          )
+        ) : null}
+      </span>
       <button
+        type="button"
         onClick={isForm ? onsubmit : null}
         className={
           isForm ? style.btnValid : style.btnDisable
@@ -155,7 +162,7 @@ const FormCrete = () => {
 
   useEffect(() => {
     if (isRandom) {
-      isCodeValid(true)
+      setIsCodeValid(true)
       setCode('')
     }
     if (code.length === 6) {
@@ -213,6 +220,7 @@ const FormCrete = () => {
         <label htmlFor="random">Random code</label>
       </div>
       <button
+        type="button"
         onClick={isForm ? onsubmit : null}
         className={
           isForm ? style.btnValid : style.btnDisable

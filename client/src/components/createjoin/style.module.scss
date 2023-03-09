@@ -81,7 +81,6 @@
       background-color: transparent;
       text-align: center;
     }
-
   }
   
   .labelValid,
@@ -136,4 +135,13 @@
   }
 }
 
-
+.join{
+  .labelValid,
+  .labelInValid,
+  .labelLoading
+  {
+    right: 30px;
+    bottom: 85px;
+    font-size: 9px;
+  }
+}

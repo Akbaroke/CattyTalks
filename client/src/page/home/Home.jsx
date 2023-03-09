@@ -7,7 +7,8 @@ import CreateAndJoin from '../../components/createjoin/CreateAndJoin'
 import { useSWRContext } from '../../swr/swr-context'
 
 export default function Home() {
-  const { room } = useSWRContext()
+  const [nav, setNav] = useState('My Room')
+  const { room, join } = useSWRContext()
   const [openFrom, setOpenFrom] = useState(false)
 
   const handleLogout = () => {
@@ -21,6 +22,54 @@ export default function Home() {
     location.reload()
   }
 
+  const MyRoom = () => (
+    <>
+      {room?.length > 0 ? (
+        <div className={style.myListRoom}>
+          <div className={style.headerList}>
+            <hr />
+            <p>My Room</p>
+            <hr />
+          </div>
+          <div className={style.listData}>
+            {room.map((data, index) => (
+              <CardListRoom data={data} key={index} />
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div className={style.label_blankRoom}>
+          <p>Create a room in advance to display history</p>
+        </div>
+      )}
+    </>
+  )
+
+  const MyJoin = () => (
+    <>
+      {join?.length > 0 ? (
+        <div className={style.myListRoom}>
+          <div className={style.headerList}>
+            <hr />
+            <p>My Join</p>
+            <hr />
+          </div>
+          <div className={style.listData}>
+            {join.map((data, index) => (
+              <CardListRoom data={data} key={index} />
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div className={style.label_blankRoom}>
+          <p>Join a room in advance to display history</p>
+        </div>
+      )}
+    </>
+  )
+
+  const MYROOM = 'My Room'
+  const MYJOIN = 'My Join'
   return (
     <Container disable>
       {openFrom && <CreateAndJoin />}
@@ -43,31 +92,35 @@ export default function Home() {
             </div>
             <IconLogout onClick={handleLogout} />
           </div>
-          <div>
-            <p>{room?.length || 0} of 3</p>
+          <div className={style.nav}>
+            <div
+              className={
+                nav === MYROOM ? style.active : null
+              }
+              onClick={() => setNav(MYROOM)}>
+              {nav !== MYROOM ? (
+                MYROOM
+              ) : (
+                <>{room?.length || 0} of 3</>
+              )}
+            </div>
+            <div
+              className={
+                nav === MYJOIN ? style.active : null
+              }
+              onClick={() => setNav(MYJOIN)}>
+              {nav !== MYJOIN ? (
+                MYJOIN
+              ) : (
+                <>
+                  {room?.length || 0} of <p>&#8734;</p>
+                </>
+              )}
+            </div>
           </div>
         </div>
         <div className={style.body}>
-          {room?.length > 0 ? (
-            <div className={style.myListRoom}>
-              <div className={style.headerList}>
-                <hr />
-                <p>My Room</p>
-                <hr />
-              </div>
-              <div className={style.listData}>
-                {room.map((data, index) => (
-                  <CardListRoom data={data} key={index} />
-                ))}
-              </div>
-            </div>
-          ) : (
-            <div className={style.label_blankRoom}>
-              <p>
-                Create a room in advance to display history
-              </p>
-            </div>
-          )}
+          {nav === MYROOM ? <MyRoom /> : <MyJoin />}
         </div>
         <div
           className={style.btn_add}

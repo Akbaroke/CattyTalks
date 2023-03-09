@@ -27,8 +27,6 @@ export const getAllMessages = async (req, res) => {
     const resDataNeeds = [];
     await Promise.all(
       qryChat.map(async (data) => {
-        console.log('id :', data.id);
-
         try {
           const qryUser = await User.findOne({
             where: {
@@ -94,11 +92,7 @@ export const deleteMessage = async (req, res) => {
     const qryChat = await Chat.findOne({
       id: id,
     });
-    if (qryChat.id_user !== userId) {
-      const error = new Error('this is not your message.');
-      error.statusCode = 401;
-      throw error;
-    }
+    if (qryChat.id_user !== userId) return res.status(401).json({ msg: 'this is not your message.' });
 
     await Chat.update(
       {

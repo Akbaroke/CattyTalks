@@ -3,6 +3,7 @@ import Room from '../models/Room.js';
 import { v4 as uuidv4 } from 'uuid';
 import getUnixTimestamp from '../utils/unixTimeStamp.js';
 import generateCodeRoom from '../utils/generateCodeRoom.js';
+import Join from '../models/Join.js';
 dotenv.config();
 
 export const createRoom = async (req, res) => {
@@ -75,7 +76,7 @@ export const deleteRoom = async (req, res) => {
         id_user: ui,
       },
     });
-    if (!checkRoom) res.status(200).json({ msg: 'Delete room successfully' });
+    if (!checkRoom) return res.status(200).json({ msg: 'Delete room successfully' });
 
     await Room.destroy({
       where: {
@@ -90,7 +91,6 @@ export const deleteRoom = async (req, res) => {
   }
 };
 
-
 export const checkDuplicateRoom = async (req, res) => {
   const { code } = req.body;
 
@@ -104,5 +104,100 @@ export const checkDuplicateRoom = async (req, res) => {
     res.json({ msg: 'Code is already' });
   } catch (error) {
     console.log(error);
+    res.status(400).json({ msg: 'Check duplicate failed, please try again later.' });
+  }
+};
+
+export const checkRoomForJoin = async (req, res) => {
+  const { userId, code } = req.params;
+
+  try {
+    const qry1Room = await Room.findOne({
+      where: {
+        id_user: userId,
+        code: code,
+      },
+    });
+    if (qry1Room) return res.status(201).json({ msg: 'this room is yours self.' });
+    const qry2Room = await Room.findOne({
+      where: {
+        code: code,
+      },
+    });
+    if (!qry2Room) return res.status(202).json({ msg: 'room not found.' });
+    res.json({ msg: 'room successfully found.' });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ msg: 'Check Room failed, please try again later.' });
+  }
+};
+
+export const joinRoom = async (req, res) => {
+  const { userId } = req.params;
+  const { code } = req.body;
+
+  try {
+    const checkRoom = await Room.findOne({
+      where: {
+        id_user: userId,
+        code: code,
+      },
+    });
+    if (checkRoom) return res.status(401).json({ msg: 'this is not valid.' });
+
+    // get idroom
+    const qryRoom = await Room.findOne({
+      where: {
+        code: code,
+      },
+    });
+    if (!qryRoom) return res.status(401).json({ msg: 'this is not valid.' });
+
+    await Join.create({
+      id: uuidv4(),
+      id_room: qryRoom.id,
+      id_user: userId,
+    });
+    res.json({ msg: 'Room join successfully' });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ msg: 'Join Room failed, please try again later.' });
+  }
+};
+
+export const getRoomJoin = async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const qryJoin = await Join.findAll({
+      where: {
+        id_user: userId,
+      },
+    });
+
+    const resDataNeeds = [];
+    await Promise.all(
+      qryJoin.map(async (data) => {
+        try {
+          const qryRoom = await Room.findOne({
+            where: {
+              id: data.id_room,
+            },
+          });
+
+          resDataNeeds.push({
+            code: qryRoom.code,
+            name: qryRoom.name,
+            time: qryRoom.time,
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      })
+    );
+
+    res.json(resDataNeeds);
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ msg: 'get room failed, please try again later.' });
   }
 };
