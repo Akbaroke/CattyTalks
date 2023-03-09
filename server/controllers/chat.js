@@ -70,7 +70,6 @@ export const addMessage = async (req, res) => {
 
     // insert message
     await Chat.create({
-      id: uuidv4(),
       id_room: qryRoom.id,
       id_user: userId,
       message: message,

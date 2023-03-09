@@ -29,7 +29,7 @@ export default function root() {
           />
           <Route
             exact
-            path="/chat/:code"
+            path="/chat"
             element={
               <Middleware.Auth>
                 <SWRProvider>

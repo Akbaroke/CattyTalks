@@ -34,6 +34,7 @@ export default function CreateAndJoin() {
 }
 
 const FromJoin = () => {
+  const { mutate } = useSWRConfig()
   const [code, setCode] = useState('')
   const { id } = useSelector(state => state.user)
   const [isForm, setIsForm] = useState(false)
@@ -64,8 +65,19 @@ const FromJoin = () => {
       : setIsForm(false)
   }, [code])
 
-  const onsubmit = () => {
-    console.log('submit')
+  const onsubmit = async () => {
+    try {
+      const { data } = await axios.post(
+        `/room/join/${id}`,
+        {
+          code: code,
+        }
+      )
+      console.log(data)
+    } catch (error) {
+      console.log(error)
+    }
+    mutate(`/room/join/${id}`)
   }
 
   return (

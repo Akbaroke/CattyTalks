@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import style from './style.module.scss'
 import Container from '../../components/container/Container'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import io from 'socket.io-client'
 import {
   IconArrowLeft,
@@ -12,66 +12,83 @@ import { useSelector } from 'react-redux'
 import getUnixTimestamp from '../../utils/unixTimestamp'
 import axios from '../../api'
 import ScrollToBottom from 'react-scroll-to-bottom'
+import epochToTime from '../../utils/epochToTime'
 
 export default function Chat() {
-  const { code } = useParams()
   const navigate = useNavigate()
   const { id, name, profilePicture } = useSelector(
     state => state.user
   )
+  const room = useSelector(state => state.room)
   const [userCount, setUserCount] = useState(0)
   const [currentMessage, setCurrentMessage] = useState('')
   const [messageList, setMessageList] = useState([])
-  const socket = io.connect(import.meta.env.VITE_APP_URL)
-
-  useEffect(() => {
-    socket.on('receive_message', data => {
-      setMessageList(list => [...list, data])
-    })
-
-    console.log(messageList)
-  }, [socket])
+  const socketRef = useRef(null)
 
   const getMessageHistory = async () => {
-    const { data } = await axios.get(`/chat/${id}/${code}`)
+    const { data } = await axios.get(
+      `/chat/${id}/${room.code}`
+    )
     console.log(data)
+    setMessageList(data)
   }
 
   useEffect(() => {
-    socket.emit('join_room', code)
-    socket.on('user_count_update', count => {
+    !room.code && navigate('/')
+  }, [])
+
+  useEffect(() => {
+    socketRef.current = io(import.meta.env.VITE_APP_URL)
+    socketRef.current.emit('join_room', room.code)
+    socketRef.current.on('user_count_update', count => {
       setUserCount(count)
     })
     getMessageHistory()
 
     return () => {
-      socket.emit('leave_room', code)
-      socket.on('user_count_update', count => {
-        setUserCount(count)
-      })
+      socketRef.current.emit('leave_room', room.code)
+      socketRef.current.off('user_count_update')
     }
-  }, [code])
+  }, [room.code])
 
   const handleSendMessage = async () => {
     if (currentMessage !== '') {
-      const messageData = {
-        room: code,
-        id: id,
+      const messageToSend = {
+        room: room.code,
+        id_user: id,
         name: name,
-        profilePicture: profilePicture,
+        profile_picture: profilePicture,
         message: currentMessage,
         time: getUnixTimestamp(),
       }
-      await socket.emit('send_message', messageData)
-      setMessageList(list => [...list, messageData])
-
-      await axios.post(`/chat/${id}`, {
-        room: code,
-        message: currentMessage,
-      })
+      await socketRef.current.emit(
+        'send_message',
+        messageToSend
+      )
+      setMessageList(list => [...list, messageToSend])
       setCurrentMessage('')
+      await axios.post(`/chat/${id}`, {
+        room: room.code,
+        message: messageToSend.message,
+      })
     }
   }
+
+  useEffect(() => {
+    const receiveMessageHandler = data => {
+      setMessageList(list => [...list, data])
+    }
+    socketRef.current.on(
+      'receive_message',
+      receiveMessageHandler
+    )
+    return () => {
+      socketRef.current.off(
+        'receive_message',
+        receiveMessageHandler
+      )
+    }
+  }, [])
 
   return (
     <Container>
@@ -80,42 +97,76 @@ export default function Chat() {
           <div className={style.label}>
             <IconArrowLeft onClick={() => navigate('/')} />
             <div>
-              <p>Lorem ipsum | {code}</p>
+              <p>
+                {room.name} | {room.code}
+              </p>
               <p>{userCount} online</p>
             </div>
           </div>
           <IconDotsVertical />
         </div>
         <ScrollToBottom className={style.body}>
-          {messageList.map(messageContent => (
-            <div>
-              {messageContent.id !== id ? (
-                <div>
-                  <img
-                    src={messageContent.profilePicture}
-                    alt="chattytalks"
-                  />
-                  <p>{messageContent.name}</p>
-                  <p>{messageContent.message}</p>
-                  <p>{messageContent.time}</p>
-                </div>
-              ) : (
-                <div>
-                  <p>{messageContent.message}</p>
-                  <p>{messageContent.time}</p>
-                </div>
-              )}
-            </div>
-          ))}
+          {messageList
+            .sort((a, b) => a.id - b.id)
+            .map(messageContent => (
+              <div
+                key={messageContent.id}
+                className={
+                  messageContent.id_user !== id
+                    ? style.otherChat
+                    : style.meChat
+                }>
+                {messageContent.id_user !== id ? (
+                  <>
+                    <img
+                      src={messageContent.profile_picture}
+                      alt="chattytalks"
+                    />
+                    <div>
+                      <div>
+                        <p>{messageContent.name}</p>
+                        <p>
+                          {epochToTime(messageContent.time)}
+                        </p>
+                      </div>
+                      <p>
+                        {messageContent.trash ? (
+                          <i>Pesan telah terhapus.</i>
+                        ) : (
+                          messageContent.message
+                        )}
+                      </p>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <p>
+                      {epochToTime(messageContent.time)}
+                    </p>
+                    <p>
+                      {messageContent.trash ? (
+                        <i>Pesan telah terhapus.</i>
+                      ) : (
+                        messageContent.message
+                      )}
+                    </p>
+                  </>
+                )}
+              </div>
+            ))}
         </ScrollToBottom>
         <div className={style.footer}>
           <input
             type="text"
             placeholder="Type something"
             value={currentMessage}
+            maxLength={300}
             onChange={e =>
               setCurrentMessage(e.target.value)
             }
+            onKeyDown={e => {
+              e.key === 'Enter' && handleSendMessage()
+            }}
           />
           {currentMessage.replace(' ', '').length > 0 && (
             <div>

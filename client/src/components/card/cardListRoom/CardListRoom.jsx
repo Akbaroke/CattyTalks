@@ -6,11 +6,13 @@ import useCurrentDate from '../../../hooks/useCurrentDate.js';
 import useDetectOutsideClick from '../../../hooks/useDetectOutsideClick.js'
 import axios from '../../../api'
 import { useSWRConfig } from 'swr'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { setRoom } from '../../../redux/actions/room'
 
 const CardListRoom = ({ data }) => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const { id } = useSelector(state => state.user)
   const { mutate } = useSWRConfig()
   const dropdownRef = useRef(null)
@@ -27,8 +29,9 @@ const CardListRoom = ({ data }) => {
     console.log(data)
   }
 
-  const goToChatRoom = e => {
-    navigate(`/chat/${data.code}`)
+  const goToChatRoom = () => {
+    dispatch(setRoom(data.code, data.name))
+    navigate(`/chat`)
   }
 
   return (

@@ -39,6 +39,7 @@
     border: 1px solid #000;
     border-radius: 50px;
     cursor: pointer;
+    transition: all .3s;
 
     div {
       width: 100%;
@@ -64,6 +65,8 @@
       border: 1px solid #000;
       color: #fff;
       box-shadow: 4px 4px 8px #eaeaea;
+      text-shadow: 0 0 6px #eaeaea;
+      
     }
   }
 }

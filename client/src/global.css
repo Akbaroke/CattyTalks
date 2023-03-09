@@ -4,3 +4,31 @@
   font-family: 'IBM Plex Mono', monospace !important;
   box-sizing: border-box;
 }
+
+
+/* Scroll Bar */
+::-webkit-scrollbar {
+    width: 5px;
+}
+::-webkit-scrollbar-track {
+    background: #a7a6a6;
+	width: 5px;
+}
+::-webkit-scrollbar-thumb {
+    background: #717171;
+    border-radius: 50px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #717171;
+}
+@media (max-width: 425px) {
+	::-webkit-scrollbar-track {
+		background: #a7a6a6;
+		width: 2px;
+	}
+}
+
+i{
+  font-style: italic;
+  font-weight: 400;
+}

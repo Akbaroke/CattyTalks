@@ -7,9 +7,9 @@ const Chat = db.define(
   'tb_chat',
   {
     id: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       primaryKey: true,
-      autoIncrement: false,
+      autoIncrement: true,
     },
     id_room: {
       type: DataTypes.STRING,

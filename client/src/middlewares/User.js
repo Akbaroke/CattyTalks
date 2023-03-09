@@ -18,8 +18,8 @@ export default function User({ children }) {
       dispatch(
         setLogin(
           data.user._json.sub,
-          data.user._json.name,
           data.user._json.email,
+          data.user._json.name,
           data.user._json.picture
         )
       )
