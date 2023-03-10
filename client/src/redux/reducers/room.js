@@ -3,6 +3,7 @@ import ActionType from '../actionType'
 const initState = {
   code: '',
   name: '',
+  role: 'visitor',
 }
 
 const reducerRoom = (state = initState, action) => {
@@ -11,6 +12,7 @@ const reducerRoom = (state = initState, action) => {
       return {
         code: action.payload.code,
         name: action.payload.name,
+        role: action.payload.role,
       }
     default:
       return state

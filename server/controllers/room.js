@@ -76,7 +76,7 @@ export const deleteRoom = async (req, res) => {
         id_user: ui,
       },
     });
-    if (!checkRoom) return res.status(200).json({ msg: 'Delete room successfully' });
+    if (!checkRoom) return res.status(401).json({ msg: 'Delete room failed' });
 
     await Room.destroy({
       where: {
@@ -199,5 +199,47 @@ export const getRoomJoin = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(400).json({ msg: 'get room failed, please try again later.' });
+  }
+};
+
+export const deleteJoin = async (req, res) => {
+  const { userId, code } = req.params;
+
+  try {
+    // get room id
+    const qryRoom = await Room.findOne({
+      where: {
+        code: code,
+      },
+    });
+    if (!qryRoom) return res.status(401).json({ msg: 'Delete room failed' });
+
+    await Join.destroy({
+      where: {
+        id_room: qryRoom.id,
+        id_user: userId,
+      },
+    });
+    res.status(200).json({ msg: 'Delete room successfully' });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ msg: 'Delete room failed' });
+  }
+};
+
+export const checkStatusRoom = async (req, res) => {
+  const { code } = req.params;
+  try {
+    const qryRoom = await Room.findOne({
+      where: {
+        code: code,
+      },
+    });
+    if (!qryRoom) return res.status(201).json({ msg: 'This room has expired or been deleted.' });
+
+    res.json({ msg: 'Room is ready to use.' });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ msg: 'get room status failed, please try again later.' });
   }
 };

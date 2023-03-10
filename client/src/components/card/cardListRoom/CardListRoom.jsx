@@ -1,16 +1,17 @@
 import { IconDotsVertical, IconMessageDots } from '@tabler/icons-react';
-import React, { useRef } from 'react';
-import style from './stye.module.scss';
-import { countdownTime } from '../../../utils/countdownTimestamp.js';
-import useCurrentDate from '../../../hooks/useCurrentDate.js';
+import React, { useEffect, useRef, useState } from 'react'
+import style from './stye.module.scss'
+import { countdownTime } from '../../../utils/countdownTimestamp.js'
+import useCurrentDate from '../../../hooks/useCurrentDate.js'
 import useDetectOutsideClick from '../../../hooks/useDetectOutsideClick.js'
 import axios from '../../../api'
 import { useSWRConfig } from 'swr'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { setRoom } from '../../../redux/actions/room'
+import globalType from '../../../globalType'
 
-const CardListRoom = ({ data }) => {
+const CardListRoom = ({ data, from }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { id } = useSelector(state => state.user)
@@ -20,17 +21,31 @@ const CardListRoom = ({ data }) => {
     dropdownRef,
     false
   )
+  const [role, setRole] = useState('')
+
+  useEffect(() => {
+    if (from === globalType.MYROOM) {
+      setRole('host')
+    } else if (from === globalType.MYJOIN) {
+      setRole('visitor')
+    }
+  }, [from])
 
   const handleDelete = async (roomId, userId) => {
     const { data } = await axios.delete(
       `/room?ui=${userId}&ri=${roomId}`
     )
     mutate(`/room/${id}`)
+    mutate('/room/join')
     console.log(data)
   }
 
+  const handleDeleteJoin = async (req, res) => {
+    // const { data } = await axios.
+  }
+
   const goToChatRoom = () => {
-    dispatch(setRoom(data.code, data.name))
+    dispatch(setRoom(data.code, data.name, role))
     navigate(`/chat`)
   }
 

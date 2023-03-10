@@ -13,6 +13,7 @@ import getUnixTimestamp from '../../utils/unixTimestamp'
 import axios from '../../api'
 import ScrollToBottom from 'react-scroll-to-bottom'
 import epochToTime from '../../utils/epochToTime'
+import DefaultProfilePicture from '../../assets/DefaultProfilePicture.png'
 
 export default function Chat() {
   const navigate = useNavigate()
@@ -24,6 +25,7 @@ export default function Chat() {
   const [currentMessage, setCurrentMessage] = useState('')
   const [messageList, setMessageList] = useState([])
   const socketRef = useRef(null)
+  const [heightTextArea, setHeightTextArea] = useState(50)
 
   const getMessageHistory = async () => {
     const { data } = await axios.get(
@@ -90,6 +92,32 @@ export default function Chat() {
     }
   }, [])
 
+  const handleChange = e => {
+    setCurrentMessage(e.target.value)
+    setHeightTextArea(e.target.scrollHeight)
+    if (e.target.scrollHeight <= 50) {
+      setHeightTextArea(50)
+    }
+    if (e.target.value.length <= 20) {
+      setHeightTextArea(50)
+    }
+  }
+
+  const handleKeyDown = e => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      handleSendMessage()
+      setHeightTextArea(50)
+    } else if (e.key === 'Backspace') {
+      if (e.target.scrollHeight <= 50) {
+        console.log()
+        setHeightTextArea(50)
+      } else {
+        setHeightTextArea(e.target.scrollHeight - 10)
+      }
+    }
+  }
+
   return (
     <Container>
       <div className={style.main}>
@@ -108,9 +136,9 @@ export default function Chat() {
         <ScrollToBottom className={style.body}>
           {messageList
             .sort((a, b) => a.id - b.id)
-            .map(messageContent => (
+            .map((messageContent, index) => (
               <div
-                key={messageContent.id}
+                key={index}
                 className={
                   messageContent.id_user !== id
                     ? style.otherChat
@@ -119,8 +147,10 @@ export default function Chat() {
                 {messageContent.id_user !== id ? (
                   <>
                     <img
-                      src={messageContent.profile_picture}
-                      alt="chattytalks"
+                      src={
+                        messageContent.profile_picture ||
+                        DefaultProfilePicture
+                      }
                     />
                     <div>
                       <div>
@@ -156,17 +186,14 @@ export default function Chat() {
             ))}
         </ScrollToBottom>
         <div className={style.footer}>
-          <input
+          <textarea
             type="text"
             placeholder="Type something"
             value={currentMessage}
             maxLength={300}
-            onChange={e =>
-              setCurrentMessage(e.target.value)
-            }
-            onKeyDown={e => {
-              e.key === 'Enter' && handleSendMessage()
-            }}
+            onChange={handleChange}
+            onKeyDown={handleKeyDown}
+            style={{ height: heightTextArea }}
           />
           {currentMessage.replace(' ', '').length > 0 && (
             <div>

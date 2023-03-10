@@ -77,7 +77,7 @@ const FromJoin = () => {
     } catch (error) {
       console.log(error)
     }
-    mutate(`/room/join/${id}`)
+    mutate('/room/join')
   }
 
   return (

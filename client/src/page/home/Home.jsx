@@ -5,6 +5,7 @@ import { IconLogout, IconPlus } from '@tabler/icons-react'
 import CardListRoom from '../../components/card/cardListRoom/CardListRoom'
 import CreateAndJoin from '../../components/createjoin/CreateAndJoin'
 import { useSWRContext } from '../../swr/swr-context'
+import globalType from '../../globalType'
 
 export default function Home() {
   const [nav, setNav] = useState('My Room')
@@ -33,7 +34,11 @@ export default function Home() {
           </div>
           <div className={style.listData}>
             {room.map((data, index) => (
-              <CardListRoom data={data} key={index} />
+              <CardListRoom
+                data={data}
+                from={globalType.MYROOM}
+                key={index}
+              />
             ))}
           </div>
         </div>
@@ -56,7 +61,11 @@ export default function Home() {
           </div>
           <div className={style.listData}>
             {join.map((data, index) => (
-              <CardListRoom data={data} key={index} />
+              <CardListRoom
+                data={data}
+                from={globalType.MYJOIN}
+                key={index}
+              />
             ))}
           </div>
         </div>
@@ -68,8 +77,6 @@ export default function Home() {
     </>
   )
 
-  const MYROOM = 'My Room'
-  const MYJOIN = 'My Join'
   return (
     <Container disable>
       {openFrom && <CreateAndJoin />}
@@ -95,22 +102,26 @@ export default function Home() {
           <div className={style.nav}>
             <div
               className={
-                nav === MYROOM ? style.active : null
+                nav === globalType.MYROOM
+                  ? style.active
+                  : null
               }
-              onClick={() => setNav(MYROOM)}>
-              {nav !== MYROOM ? (
-                MYROOM
+              onClick={() => setNav(globalType.MYROOM)}>
+              {nav !== globalType.MYROOM ? (
+                globalType.MYROOM
               ) : (
                 <>{room?.length || 0} of 3</>
               )}
             </div>
             <div
               className={
-                nav === MYJOIN ? style.active : null
+                nav === globalType.MYJOIN
+                  ? style.active
+                  : null
               }
-              onClick={() => setNav(MYJOIN)}>
-              {nav !== MYJOIN ? (
-                MYJOIN
+              onClick={() => setNav(globalType.MYJOIN)}>
+              {nav !== globalType.MYJOIN ? (
+                globalType.MYJOIN
               ) : (
                 <>
                   {room?.length || 0} of <p>&#8734;</p>
@@ -120,7 +131,11 @@ export default function Home() {
           </div>
         </div>
         <div className={style.body}>
-          {nav === MYROOM ? <MyRoom /> : <MyJoin />}
+          {nav === globalType.MYROOM ? (
+            <MyRoom />
+          ) : (
+            <MyJoin />
+          )}
         </div>
         <div
           className={style.btn_add}

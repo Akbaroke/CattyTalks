@@ -23,7 +23,7 @@ export const SWRProvider = ({ children }) => {
     : []
 
   const { data: join } = id
-    ? useSWR(`/room/join/${id}`, joinList)
+    ? useSWR(`/room/join`, joinList)
     : []
 
   return (

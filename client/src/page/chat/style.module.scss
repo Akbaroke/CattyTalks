@@ -46,10 +46,11 @@
   height: 100vh;
   overflow-y: auto;
   overflow-x: hidden;
-  padding-bottom: 200px;
+  padding-bottom: 150px;
 
   &>div:nth-of-type(1) {
     padding: 0 20px;
+    padding-bottom: 50px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -69,6 +70,7 @@
         border: 1px solid #fff;
         border-radius: 50%;
         box-shadow: 0 4px 4px #00000040;
+        background-color: #49BFB7;
       }
 
       &>div {
@@ -105,7 +107,8 @@
           max-width: 50vw;
           font-size: 14px;
           font-weight: 500;
-          line-height: 12px;
+          line-height: 18px;
+          box-shadow: 10px 10px 21px #75757540;
         }
       }
     }
@@ -134,7 +137,8 @@
         max-width: 50vw;
         font-size: 14px;
         font-weight: 500;
-        line-height: 12px;
+        line-height: 18px;
+        box-shadow: 10px 10px 21px #75757540;
       }
     }
   }
@@ -149,16 +153,22 @@
   padding: 20px;
   position: sticky;
   bottom: 0;
-  background-color: #fff;
+  background: linear-gradient(358.05deg, #FFFFFF 72.94%, rgba(255, 255, 255, 0) 93.52%);
 
-  input {
+  textarea {
     flex-grow: 1;
-    padding: 19px 20px;
+    padding: 12px 20px;
     border: 1px solid #000;
     background-color: #fff;
     border-radius: 25px;
     outline: none;
     font-size: 16px;
+    resize: none;
+    height: 50px;
+
+    &::-webkit-scrollbar{
+      width: 0;
+    }
   }
 
   div {
