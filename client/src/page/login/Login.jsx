@@ -4,6 +4,7 @@ import googleIcon from '../../assets/google.svg'
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import logo from '../../assets/chattytalks.svg'
 
 export default function Login() {
   const { isAuth } = useSelector(state => state.user)
@@ -26,7 +27,11 @@ export default function Login() {
   return (
     <Container>
       <div className={style.login}>
-        <h1>Log in</h1>
+        <img
+          className={style.logo}
+          src={logo}
+          alt="Chatty Talks"
+        />
         <div onClick={googleAuth}>
           <img src={googleIcon} />
           <p>Continue with Google</p>
