@@ -6,7 +6,7 @@ import {
   IconMessagePlus,
   IconMessageShare,
 } from '@tabler/icons-react'
-import CardListRoom from '../../components/card/cardListRoom/CardListRoom'
+import CardListRoom from '../../components/CardList/CardListRoom'
 import CreateAndJoin from '../../components/CreateandJoin'
 import { useSWRContext } from '../../swr/swr-context'
 import globalType from '../../globalType'
@@ -15,6 +15,7 @@ import { unsetRoom } from '../../redux/actions/room'
 import { useFormModal } from '../../zustand/popup-state'
 import Loading from '../../components/Loading/Loading'
 import { useLoadingState } from '../../zustand/loading-state'
+import Alert from '../../components/Alert'
 
 export default function Home() {
   const { room, join } = useSWRContext()
@@ -99,6 +100,7 @@ export default function Home() {
 
   return (
     <Container disable>
+      {<Alert />}
       {isLoading && <Loading />}
       {<CreateAndJoin />}
       <div className={style.home}>

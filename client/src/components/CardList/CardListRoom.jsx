@@ -1,16 +1,20 @@
-import { IconDotsVertical, IconMessageDots } from '@tabler/icons-react';
+import {
+  IconDotsVertical,
+  IconMessageDots,
+} from '@tabler/icons-react'
 import React, { useEffect, useRef, useState } from 'react'
 import style from './stye.module.scss'
-import { countdownTime } from '../../../utils/countdownTimestamp.js'
-import useCurrentDate from '../../../hooks/useCurrentDate.js'
-import useDetectOutsideClick from '../../../hooks/useDetectOutsideClick.js'
-import axios from '../../../api'
+import { countdownTime } from '../../utils/countdownTimestamp.js'
+import useCurrentDate from '../../hooks/useCurrentDate.js'
+import useDetectOutsideClick from '../../hooks/useDetectOutsideClick.js'
+import axios from '../../api'
 import { useSWRConfig } from 'swr'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { setRoom } from '../../../redux/actions/room'
-import globalType from '../../../globalType'
-import { useLoadingState } from '../../../zustand/loading-state'
+import { setRoom } from '../../redux/actions/room'
+import globalType from '../../globalType'
+import { useLoadingState } from '../../zustand/loading-state'
+import { useAlertState } from '../../zustand/alert-state'
 
 const CardListRoom = ({ data, from }) => {
   const navigate = useNavigate()
@@ -26,6 +30,8 @@ const CardListRoom = ({ data, from }) => {
   const { loadingSet, loadingUnset } = useLoadingState(
     state => state
   )
+  const { alertOpenSuccess, alertOpenError } =
+    useAlertState(state => state)
 
   useEffect(() => {
     if (from === globalType.MYROOM) {
@@ -37,23 +43,31 @@ const CardListRoom = ({ data, from }) => {
 
   const handleDelete = async (roomId, userId) => {
     loadingSet()
-    const { data } = await axios.delete(
-      `/room?ui=${userId}&ri=${roomId}`
-    )
-    mutate(`/room/${id}`)
-    mutate('/room/join')
-    mutate(`/room/status/${data.code}`)
-    console.log(data)
+    try {
+      const { data } = await axios.delete(
+        `/room?ui=${userId}&ri=${roomId}`
+      )
+      mutate(`/room/${id}`)
+      mutate('/room/join')
+      mutate(`/room/status/${data.code}`)
+      alertOpenSuccess(data.msg)
+    } catch (error) {
+      alertOpenError(error.response.data.msg)
+    }
     loadingUnset()
   }
 
   const handleDeleteJoin = async code => {
     loadingSet()
-    const { data } = await axios.delete(
-      `/room/join/${id}/${code}`
-    )
-    mutate('/room/join')
-    console.log(data)
+    try {
+      const { data } = await axios.delete(
+        `/room/join/${id}/${code}`
+      )
+      mutate('/room/join')
+      alertOpenSuccess(data.msg)
+    } catch (error) {
+      alertOpenError(error.response.data.msg)
+    }
     loadingUnset()
   }
 
@@ -94,7 +108,17 @@ const CardListRoom = ({ data, from }) => {
             className={
               isOpen ? style.dropdown : style.dropdownHide
             }>
-            {role === 'host' && <span>setting</span>}
+            {role === 'host' && (
+              <span
+                onClick={e => {
+                  e.stopPropagation()
+                  alertOpenError(
+                    'Sorry, this feature is still under development.'
+                  )
+                }}>
+                setting
+              </span>
+            )}
             <span
               className={style.delete}
               onClick={e => {
@@ -112,4 +136,4 @@ const CardListRoom = ({ data, from }) => {
   )
 }
 
-export default CardListRoom;
+export default CardListRoom

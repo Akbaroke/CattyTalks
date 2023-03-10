@@ -5,6 +5,8 @@ import { useSelector } from 'react-redux'
 import axios from '../../api'
 import { useFormModal } from '../../zustand/popup-state'
 import { useLoadingState } from '../../zustand/loading-state'
+import { useAlertState } from '../../zustand/alert-state'
+import numberOnly from '../../utils/numberOnly'
 
 export default function Create() {
   const { mutate } = useSWRConfig()
@@ -20,39 +22,41 @@ export default function Create() {
   const { loadingSet, loadingUnset } = useLoadingState(
     state => state
   )
+  const { alertOpenSuccess, alertOpenError } =
+    useAlertState(state => state)
 
   const onsubmit = async e => {
     loadingSet()
     e.preventDefault()
-    const { data } = await axios.post(
-      `/room/create/${id}`,
-      {
-        name: name,
-        code: isRandom ? undefined : code,
-      }
-    )
-    mutate(`/room/${id}`)
-    setIsCodeValid(false)
+    try {
+      const { data } = await axios.post(
+        `/room/create/${id}`,
+        {
+          name: name,
+          code: isRandom ? undefined : code,
+        }
+      )
+      mutate(`/room/${id}`)
+      alertOpenSuccess(data.msg)
+    } catch (error) {
+      alertOpenError(error.response.data.msg)
+    }
     unSet()
-    console.log(data)
+    setIsCodeValid(false)
     loadingUnset()
   }
 
   const handlePressCode = async code => {
     setLoadingCode(true)
-    try {
-      const res = await axios.post(`/room/check/${id}`, {
-        code: code,
-      })
-      if (res.status === 201) {
-        setIsCodeValid(true)
-      } else {
-        setIsCodeValid(false)
-      }
-      setMsg(res.data.msg)
-    } catch (error) {
-      console.log(error)
+    const res = await axios.post(`/room/check/${id}`, {
+      code: code,
+    })
+    if (res.status === 201) {
+      setIsCodeValid(true)
+    } else {
+      setIsCodeValid(false)
     }
+    setMsg(res.data.msg)
     setLoadingCode(false)
   }
 
