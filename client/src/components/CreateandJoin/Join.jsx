@@ -5,6 +5,7 @@ import { useSWRConfig } from 'swr'
 import axios from '../../api'
 import { useFormModal } from '../../zustand/popup-state'
 import numberOnly from '../../utils/numberOnly'
+import { useLoadingState } from '../../zustand/loading-state'
 
 export default function Join() {
   const { mutate } = useSWRConfig()
@@ -14,6 +15,9 @@ export default function Join() {
   const [isForm, setIsForm] = useState(false)
   const [loadingCode, setLoadingCode] = useState(false)
   const [msg, setMsg] = useState('')
+  const { loadingSet, loadingUnset } = useLoadingState(
+    state => state
+  )
 
   const handlePressCode = async code => {
     setLoadingCode(true)
@@ -40,12 +44,14 @@ export default function Join() {
   }, [code])
 
   const onsubmit = async () => {
+    loadingSet()
     const { data } = await axios.post(`/room/join/${id}`, {
       code: code,
     })
     console.log(data)
     mutate('/room/join')
     unSet()
+    loadingUnset()
   }
 
   return (

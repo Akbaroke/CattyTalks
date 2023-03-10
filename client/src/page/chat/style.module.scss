@@ -48,6 +48,30 @@
   overflow-x: hidden;
   padding-bottom: 150px;
 
+  &>button{
+    position: absolute;
+    bottom: 180px;
+    width: 25px;
+    height: 25px;
+    background-color: #49BFB7;
+    border-radius: 50%;
+    box-shadow: 1px 1px 4px #00000040;
+    
+    &::before{
+      content: '';
+      display: block;
+      position: absolute;
+      bottom: 2.5px;
+      right: 2.6px;
+      width: 20px;
+      height: 20px;
+      background-image: url('../../assets/arrow-bottom.svg');
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: center;
+    }
+  }
+
   &>div:nth-of-type(1) {
     padding: 0 20px;
     padding-bottom: 50px;

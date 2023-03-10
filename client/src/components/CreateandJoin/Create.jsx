@@ -4,6 +4,7 @@ import { useSWRConfig } from 'swr'
 import { useSelector } from 'react-redux'
 import axios from '../../api'
 import { useFormModal } from '../../zustand/popup-state'
+import { useLoadingState } from '../../zustand/loading-state'
 
 export default function Create() {
   const { mutate } = useSWRConfig()
@@ -16,8 +17,12 @@ export default function Create() {
   const [loadingCode, setLoadingCode] = useState(false)
   const [isCodeValid, setIsCodeValid] = useState(false)
   const [msg, setMsg] = useState('')
+  const { loadingSet, loadingUnset } = useLoadingState(
+    state => state
+  )
 
   const onsubmit = async e => {
+    loadingSet()
     e.preventDefault()
     const { data } = await axios.post(
       `/room/create/${id}`,
@@ -30,6 +35,7 @@ export default function Create() {
     setIsCodeValid(false)
     unSet()
     console.log(data)
+    loadingUnset()
   }
 
   const handlePressCode = async code => {

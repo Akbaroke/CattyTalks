@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { setRoom } from '../../../redux/actions/room'
 import globalType from '../../../globalType'
+import { useLoadingState } from '../../../zustand/loading-state'
 
 const CardListRoom = ({ data, from }) => {
   const navigate = useNavigate()
@@ -22,6 +23,9 @@ const CardListRoom = ({ data, from }) => {
     false
   )
   const [role, setRole] = useState('')
+  const { loadingSet, loadingUnset } = useLoadingState(
+    state => state
+  )
 
   useEffect(() => {
     if (from === globalType.MYROOM) {
@@ -32,6 +36,7 @@ const CardListRoom = ({ data, from }) => {
   }, [from])
 
   const handleDelete = async (roomId, userId) => {
+    loadingSet()
     const { data } = await axios.delete(
       `/room?ui=${userId}&ri=${roomId}`
     )
@@ -39,14 +44,17 @@ const CardListRoom = ({ data, from }) => {
     mutate('/room/join')
     mutate(`/room/status/${data.code}`)
     console.log(data)
+    loadingUnset()
   }
 
   const handleDeleteJoin = async code => {
+    loadingSet()
     const { data } = await axios.delete(
       `/room/join/${id}/${code}`
     )
     mutate('/room/join')
     console.log(data)
+    loadingUnset()
   }
 
   const goToChatRoom = () => {

@@ -5,7 +5,6 @@ import {
   IconLogout,
   IconMessagePlus,
   IconMessageShare,
-  IconPlus,
 } from '@tabler/icons-react'
 import CardListRoom from '../../components/card/cardListRoom/CardListRoom'
 import CreateAndJoin from '../../components/CreateandJoin'
@@ -14,13 +13,17 @@ import globalType from '../../globalType'
 import { useDispatch } from 'react-redux'
 import { unsetRoom } from '../../redux/actions/room'
 import { useFormModal } from '../../zustand/popup-state'
+import Loading from '../../components/Loading/Loading'
+import { useLoadingState } from '../../zustand/loading-state'
 
 export default function Home() {
   const { room, join } = useSWRContext()
   const dispatch = useDispatch()
   const [nav, setNav] = useState('My Room')
-  const [openFrom, setOpenFrom] = useState(false)
   const { createSet, joinSet } = useFormModal(
+    state => state
+  )
+  const { isLoading, loadingSet } = useLoadingState(
     state => state
   )
 
@@ -29,6 +32,7 @@ export default function Home() {
   }, [])
 
   const handleLogout = () => {
+    loadingSet()
     window.open(
       `${import.meta.env.VITE_APP_URL}/auth/logout`,
       '_self'
@@ -95,6 +99,7 @@ export default function Home() {
 
   return (
     <Container disable>
+      {isLoading && <Loading />}
       {<CreateAndJoin />}
       <div className={style.home}>
         <div className={style.header}>
