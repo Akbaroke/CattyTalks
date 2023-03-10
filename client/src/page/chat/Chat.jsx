@@ -14,6 +14,7 @@ import axios from '../../api'
 import ScrollToBottom from 'react-scroll-to-bottom'
 import epochToTime from '../../utils/epochToTime'
 import DefaultProfilePicture from '../../assets/DefaultProfilePicture.png'
+import useSWR, { mutate } from 'swr'
 
 export default function Chat() {
   const navigate = useNavigate()
@@ -31,13 +32,29 @@ export default function Chat() {
     const { data } = await axios.get(
       `/chat/${id}/${room.code}`
     )
-    console.log(data)
     setMessageList(data)
   }
 
   useEffect(() => {
     !room.code && navigate('/')
   }, [])
+
+  const checkStatusRoom = async () => {
+    const res = await axios.get(`/room/status/${room.code}`)
+    return res.status === 200 ? true : false
+  }
+
+  const { data = true } = useSWR(
+    `/room/status/${room.code}`,
+    checkStatusRoom
+  )
+
+  useEffect(() => {
+    if (!data) {
+      console.log('close')
+      navigate('/')
+    }
+  }, [data])
 
   useEffect(() => {
     socketRef.current = io(import.meta.env.VITE_APP_URL)
@@ -54,6 +71,7 @@ export default function Chat() {
   }, [room.code])
 
   const handleSendMessage = async () => {
+    mutate(`/room/status/${room.code}`)
     if (currentMessage !== '') {
       const messageToSend = {
         room: room.code,

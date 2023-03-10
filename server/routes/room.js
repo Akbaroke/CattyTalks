@@ -4,8 +4,8 @@ import cekUserId from '../middleware/cekUserId.js';
 const router = Router();
 
 router.delete('/', deleteRoom);
-// router.get('/:code', checkStatusRoom);
 router.get('/:userId', cekUserId, getRoom);
+router.get('/status/:code', checkStatusRoom);
 router.post('/check/:userId', cekUserId, checkDuplicateRoom);
 router.post('/create/:userId', cekUserId, createRoom);
 router.get(`/check/:userId/:code`, cekUserId, checkRoomForJoin);

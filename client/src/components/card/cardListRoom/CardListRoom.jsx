@@ -37,11 +37,16 @@ const CardListRoom = ({ data, from }) => {
     )
     mutate(`/room/${id}`)
     mutate('/room/join')
+    mutate(`/room/status/${data.code}`)
     console.log(data)
   }
 
-  const handleDeleteJoin = async (req, res) => {
-    // const { data } = await axios.
+  const handleDeleteJoin = async code => {
+    const { data } = await axios.delete(
+      `/room/join/${id}/${code}`
+    )
+    mutate('/room/join')
+    console.log(data)
   }
 
   const goToChatRoom = () => {
@@ -81,12 +86,14 @@ const CardListRoom = ({ data, from }) => {
             className={
               isOpen ? style.dropdown : style.dropdownHide
             }>
-            <span>setting</span>
+            {role === 'host' && <span>setting</span>}
             <span
               className={style.delete}
               onClick={e => {
                 e.stopPropagation()
-                handleDelete(data.id, data.id_user)
+                role === 'host'
+                  ? handleDelete(data.id, data.id_user)
+                  : handleDeleteJoin(data.code)
               }}>
               delete
             </span>

@@ -214,12 +214,13 @@ export const deleteJoin = async (req, res) => {
     });
     if (!qryRoom) return res.status(401).json({ msg: 'Delete room failed' });
 
-    await Join.destroy({
+    const deleteRoom = await Join.destroy({
       where: {
         id_room: qryRoom.id,
         id_user: userId,
       },
     });
+    if (!deleteRoom) return res.status(401).json({ msg: 'Delete room failed' });
     res.status(200).json({ msg: 'Delete room successfully' });
   } catch (error) {
     console.log(error);

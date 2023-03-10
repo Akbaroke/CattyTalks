@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import style from './style.module.scss'
 import Container from '../../components/container/Container'
 import { IconLogout, IconPlus } from '@tabler/icons-react'
@@ -6,11 +6,18 @@ import CardListRoom from '../../components/card/cardListRoom/CardListRoom'
 import CreateAndJoin from '../../components/createjoin/CreateAndJoin'
 import { useSWRContext } from '../../swr/swr-context'
 import globalType from '../../globalType'
+import { useDispatch } from 'react-redux'
+import { unsetRoom } from '../../redux/actions/room'
 
 export default function Home() {
-  const [nav, setNav] = useState('My Room')
   const { room, join } = useSWRContext()
+  const dispatch = useDispatch()
+  const [nav, setNav] = useState('My Room')
   const [openFrom, setOpenFrom] = useState(false)
+
+  useEffect(() => {
+    dispatch(unsetRoom())
+  }, [])
 
   const handleLogout = () => {
     window.open(

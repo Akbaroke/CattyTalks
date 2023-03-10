@@ -14,6 +14,8 @@ const reducerRoom = (state = initState, action) => {
         name: action.payload.name,
         role: action.payload.role,
       }
+    case ActionType.UNSET_ROOM:
+      return initState
     default:
       return state
   }

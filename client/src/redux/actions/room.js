@@ -8,3 +8,7 @@ export const setRoom = (code, name, role) => ({
     role,
   },
 })
+
+export const unsetRoom = () => ({
+  type: ActionType.UNSET_ROOM,
+})

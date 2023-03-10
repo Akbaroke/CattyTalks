@@ -7,6 +7,7 @@ export const SWRContext = createContext()
 
 export const SWRProvider = ({ children }) => {
   const { id } = useSelector(state => state.user)
+  const { code } = useSelector(state => state.room)
 
   const roomList = async () => {
     const { data } = await axios.get(`/room/${id}`)
@@ -20,11 +21,11 @@ export const SWRProvider = ({ children }) => {
 
   const { data: room } = id
     ? useSWR(`/room/${id}`, roomList)
-    : []
+    : { data: [] }
 
   const { data: join } = id
     ? useSWR(`/room/join`, joinList)
-    : []
+    : { data: [] }
 
   return (
     <SWRContext.Provider value={{ room, join }}>
