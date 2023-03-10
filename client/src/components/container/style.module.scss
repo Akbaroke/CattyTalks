@@ -4,6 +4,10 @@ $breakpoint-phone: 480px;
 .container {
   background: #fff;
   position: relative;
+  margin: auto;
+  box-shadow: 0 0 20px #979797;
+  border-radius: 10px;
+  max-width: $breakpoint-table;
 
   .accessories:nth-child(1) {
     position: relative;

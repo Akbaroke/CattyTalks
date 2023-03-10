@@ -1,127 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import style from './style.module.scss'
-import numberOnly from '../../utils/numberOnly'
+import { useSWRConfig } from 'swr'
 import { useSelector } from 'react-redux'
 import axios from '../../api'
-import { useSWRConfig } from 'swr'
+import { useFormModal } from '../../zustand/popup-state'
 
-export default function CreateAndJoin() {
-  const [nav, setNav] = useState('create')
-
-  return (
-    <div className={style.CreateAndJoin}>
-      <div className={style.card}>
-        <div className={style.nav}>
-          <div
-            className={
-              nav === 'create' ? style.active : null
-            }
-            onClick={() => setNav('create')}>
-            Create
-          </div>
-          <div
-            className={nav === 'join' ? style.active : null}
-            onClick={() => setNav('join')}>
-            Join
-          </div>
-        </div>
-        <div className={style.body}>
-          {nav === 'create' ? <FormCrete /> : <FromJoin />}
-        </div>
-      </div>
-    </div>
-  )
-}
-
-const FromJoin = () => {
-  const { mutate } = useSWRConfig()
-  const [code, setCode] = useState('')
-  const { id } = useSelector(state => state.user)
-  const [isForm, setIsForm] = useState(false)
-  const [loadingCode, setLoadingCode] = useState(false)
-  const [msg, setMsg] = useState('')
-
-  const handlePressCode = async code => {
-    setLoadingCode(true)
-    try {
-      const res = await axios.get(
-        `/room/check/${id}/${code}`
-      )
-      if (res.status === 200) {
-        setIsForm(true)
-      } else {
-        setIsForm(false)
-      }
-      setMsg(res.data.msg)
-    } catch (error) {
-      console.log(error)
-    }
-    setLoadingCode(false)
-  }
-
-  useEffect(() => {
-    code.length === 6
-      ? handlePressCode(code)
-      : setIsForm(false)
-  }, [code])
-
-  const onsubmit = async () => {
-    try {
-      const { data } = await axios.post(
-        `/room/join/${id}`,
-        {
-          code: code,
-        }
-      )
-      console.log(data)
-    } catch (error) {
-      console.log(error)
-    }
-    mutate('/room/join')
-  }
-
-  return (
-    <form className={style.join}>
-      <div className={style.fieldInput}>
-        {code && <label htmlFor="code">Code room</label>}
-        <input
-          type="text"
-          name="code"
-          maxLength={6}
-          placeholder="Code (6 number)"
-          value={code}
-          onKeyDown={e => numberOnly(e)}
-          onChange={e => setCode(e.target.value)}
-        />
-      </div>
-      <span>
-        {code.length === 6 ? (
-          loadingCode ? (
-            <p className={style.labelLoading}>
-              Check code...
-            </p>
-          ) : isForm ? (
-            <p className={style.labelValid}>{msg}</p>
-          ) : (
-            <p className={style.labelInValid}>{msg}</p>
-          )
-        ) : null}
-      </span>
-      <button
-        type="button"
-        onClick={isForm ? onsubmit : null}
-        className={
-          isForm ? style.btnValid : style.btnDisable
-        }>
-        Join
-      </button>
-    </form>
-  )
-}
-
-const FormCrete = () => {
+export default function Create() {
   const { mutate } = useSWRConfig()
   const { id } = useSelector(state => state.user)
+  const { unSet } = useFormModal(state => state)
   const [name, setName] = useState('')
   const [code, setCode] = useState('')
   const [isRandom, setIsRandom] = useState(false)
@@ -141,6 +28,7 @@ const FormCrete = () => {
     )
     mutate(`/room/${id}`)
     setIsCodeValid(false)
+    unSet()
     console.log(data)
   }
 

@@ -1,19 +1,28 @@
 import React, { useEffect, useState } from 'react'
 import style from './style.module.scss'
 import Container from '../../components/container/Container'
-import { IconLogout, IconPlus } from '@tabler/icons-react'
+import {
+  IconLogout,
+  IconMessagePlus,
+  IconMessageShare,
+  IconPlus,
+} from '@tabler/icons-react'
 import CardListRoom from '../../components/card/cardListRoom/CardListRoom'
-import CreateAndJoin from '../../components/createjoin/CreateAndJoin'
+import CreateAndJoin from '../../components/CreateandJoin'
 import { useSWRContext } from '../../swr/swr-context'
 import globalType from '../../globalType'
 import { useDispatch } from 'react-redux'
 import { unsetRoom } from '../../redux/actions/room'
+import { useFormModal } from '../../zustand/popup-state'
 
 export default function Home() {
   const { room, join } = useSWRContext()
   const dispatch = useDispatch()
   const [nav, setNav] = useState('My Room')
   const [openFrom, setOpenFrom] = useState(false)
+  const { createSet, joinSet } = useFormModal(
+    state => state
+  )
 
   useEffect(() => {
     dispatch(unsetRoom())
@@ -86,7 +95,7 @@ export default function Home() {
 
   return (
     <Container disable>
-      {openFrom && <CreateAndJoin />}
+      {<CreateAndJoin />}
       <div className={style.home}>
         <div className={style.header}>
           <div>
@@ -144,13 +153,19 @@ export default function Home() {
             <MyJoin />
           )}
         </div>
-        <div
-          className={style.btn_add}
-          onClick={() => setOpenFrom(!openFrom)}>
-          <div className={openFrom ? style.rotate : null}>
-            <IconPlus />
+        {nav === globalType.MYROOM ? (
+          <div
+            className={style.btn_createRoom}
+            onClick={createSet}>
+            <IconMessagePlus />
           </div>
-        </div>
+        ) : (
+          <div
+            className={style.btn_joinRoom}
+            onClick={joinSet}>
+            <IconMessageShare />
+          </div>
+        )}
       </div>
     </Container>
   )

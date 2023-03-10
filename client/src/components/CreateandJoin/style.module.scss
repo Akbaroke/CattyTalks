@@ -18,31 +18,47 @@
 }
 
 .nav{
-  background-color: #F8F7FC;
+  width: 100%;
+  text-align: end;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 20px;
-  padding: 6px;
-  border: 1px solid #000;
-  border-radius: 50px;
-  cursor: pointer;
-  
-  div{
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 12px;
-    font-weight: 400;
-    letter-spacing: .5mm;
+  align-items: center;
+  position: relative;
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+  border-bottom: 1px solid #eaeaea;
+
+  h1{
+    font-size: 18px;
+    font-weight: 500;
+    color: #49BFB7;
+    text-shadow: 1px 1px 2px #cecece;
   }
 
-  .active{
-    background-color: #49BFB7;
-    height: 35px;
-    border-radius: 35px;
-    border: 1px solid #000;
+  span {
+    display: inline-flex;
+    width: 25px;
+    height: 25px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: #cecece;
     color: #fff;
+    position: relative;
+    top: -10px;
+    right: -10px;
+    cursor: pointer;
+    
+    &>svg{
+      height: 18px;
+      stroke-width: 3;
+    }
+
+    &:hover{
+      background-color: #fff;
+      color: #df4848;
+    }
+
   }
 }
 

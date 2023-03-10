@@ -1,5 +1,14 @@
+@keyframes blink {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
 .home {
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   padding: 20px;
 }
@@ -92,40 +101,35 @@
   }
 }
 
-.btn_add {
-  position: fixed;
-  z-index: 10;
-  width: 100%;
-  bottom: 120px;
+.btn_joinRoom,
+.btn_createRoom{
+  position: absolute;
+  bottom: 50px;
+  right: 50px;
+  width: 55px;
+  height: 55px;
+  background-color: #49BFB7;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 15px;
+  box-shadow: 2px 2px 4px #00000040;
+  transition: all .3s;
+  animation: blink .8s ease-in-out infinite;
 
-  .rotate {
-    transform: rotate(225deg);
-    transition: all .3s;
+  svg{
+    width: 35px;
+    height: 35px;
+    transform: scaleX(-1);
+    stroke-width: 2;
   }
 
-  div {
-    position: absolute;
-    right: 50%;
-    width: 55px;
-    height: 55px;
-    border: 1px solid #1f1f1f;
-    border-radius: 100%;
-    background-color: #FE5959;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: all .3s;
-    cursor: pointer;
-
-    svg {
-      width: 27px;
-      height: 27px;
-      padding: 3px;
-      background-color: #fff;
-      color: #FE5959;
-      border-radius: 50%;
-    }
+  &:hover {
+    animation: none;
   }
+
 }
 
 .myListRoom {
