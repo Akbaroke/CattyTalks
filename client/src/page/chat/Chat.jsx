@@ -169,6 +169,9 @@ export default function Chat() {
                         messageContent.profile_picture ||
                         DefaultProfilePicture
                       }
+                      onError={e => {
+                        e.target.src = DefaultProfilePicture
+                      }}
                     />
                     <div>
                       <div>
