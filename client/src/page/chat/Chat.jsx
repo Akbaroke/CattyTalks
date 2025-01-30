@@ -174,19 +174,17 @@ export default function Chat() {
                       }}
                     />
                     <div>
-                      <div>
-                        <p>{messageContent.name}</p>
-                        <p>
-                          {epochToTime(messageContent.time)}
-                        </p>
-                      </div>
-                      <p>
+                      <p>{messageContent.name}</p>
+                      <div className={style.message}>
                         {messageContent.trash ? (
                           <i>Pesan telah terhapus.</i>
                         ) : (
-                          messageContent.message
+                          <p>{messageContent.message}</p>
                         )}
-                      </p>
+                        <span>
+                          {epochToTime(messageContent.time)}
+                        </span>
+                      </div>
                     </div>
                   </>
                 ) : (

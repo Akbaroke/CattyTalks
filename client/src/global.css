@@ -21,12 +21,41 @@
 ::-webkit-scrollbar-thumb:hover {
     background: #717171;
 }
-@media (max-width: 425px) {
+
+/* Firefox */
+html:not(:-moz-handler-blocked) {
+	scrollbar-color: #717171 #a7a6a6;
+	scrollbar-width: thin;
+}
+
+/* Edge */
+@supports (-ms-overflow-style: none) {
+	/* disable IE11+ Windows Scrollbar */
+	*::-webkit-scrollbar {
+		width: 0px;
+		height: 0px;
+	}
+	* {
+		-ms-overflow-style: none !important;
+	}
+	/* enable Edge and Chromium Edge Scrollbar */
+	::-webkit-scrollbar {
+		width: 5px;
+		height: 5px;
+	}
 	::-webkit-scrollbar-track {
 		background: #a7a6a6;
-		width: 2px;
+		width: 5px;
+	}
+	::-webkit-scrollbar-thumb {
+		background: #717171;
+		border-radius: 50px;
+	}
+	::-webkit-scrollbar-thumb:hover {
+		background: #717171;
 	}
 }
+
 
 i{
   font-style: italic;

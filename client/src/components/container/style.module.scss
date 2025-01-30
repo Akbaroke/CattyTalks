@@ -8,7 +8,7 @@ $breakpoint-phone: 480px;
   box-shadow: 0 0 20px #979797;
   border-radius: 10px;
   max-width: $breakpoint-table;
-  overflow-x: hidden;
+  overflow: hidden;
 
   .accessories:nth-child(1) {
     position: relative;
@@ -53,7 +53,3 @@ $breakpoint-phone: 480px;
     }
   }
 }
-
-// @media (max-width: $breakpoint-phone){
-
-// }

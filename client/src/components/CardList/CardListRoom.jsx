@@ -108,7 +108,7 @@ const CardListRoom = ({ data, from }) => {
             className={
               isOpen ? style.dropdown : style.dropdownHide
             }>
-            {role === 'host' && (
+            {/* {role === 'host' && (
               <span
                 onClick={e => {
                   e.stopPropagation()
@@ -118,7 +118,7 @@ const CardListRoom = ({ data, from }) => {
                 }}>
                 setting
               </span>
-            )}
+            )} */}
             <span
               className={style.delete}
               onClick={e => {
