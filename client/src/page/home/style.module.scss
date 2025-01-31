@@ -1,5 +1,6 @@
 @keyframes blink {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
   }
   50% {
@@ -26,21 +27,24 @@
     padding: 0 5px;
 
     .logo {
-      display: flex;
-      gap: 10px;
+      font-weight: 600;
+      font-family: Arial, Helvetica, sans-serif !important;
+      color: #49bfb7;
+      font-size: 22px;
+      font-style: italic;
       cursor: pointer;
     }
 
     svg {
       width: 25px;
       height: 25px;
-      color: #FE5959;
+      color: #fe5959;
       cursor: pointer;
     }
   }
 
   .nav {
-    background-color: #F8F7FC;
+    background-color: #f8f7fc;
     display: flex;
     justify-content: space-between;
     margin-bottom: 10px;
@@ -48,7 +52,7 @@
     border: 1px solid #000;
     border-radius: 50px;
     cursor: pointer;
-    transition: all .3s;
+    transition: all 0.3s;
 
     div {
       width: 100%;
@@ -57,9 +61,9 @@
       align-items: center;
       font-size: 14px;
       font-weight: 500;
-      letter-spacing: -.3mm;
+      letter-spacing: -0.3mm;
 
-      p{
+      p {
         font-size: 22px;
         margin-left: 8px;
         margin-bottom: 2px;
@@ -68,14 +72,13 @@
     }
 
     .active {
-      background-color: #49BFB7;
+      background-color: #49bfb7;
       height: 40px;
       border-radius: 40px;
       border: 1px solid #000;
       color: #fff;
       box-shadow: 4px 4px 8px #eaeaea;
       text-shadow: 0 0 6px #eaeaea;
-      
     }
   }
 }
@@ -102,13 +105,13 @@
 }
 
 .btn_joinRoom,
-.btn_createRoom{
+.btn_createRoom {
   position: absolute;
   bottom: 50px;
   right: 50px;
   width: 55px;
   height: 55px;
-  background-color: #49BFB7;
+  background-color: #49bfb7;
   color: #fff;
   cursor: pointer;
   display: flex;
@@ -116,10 +119,10 @@
   align-items: center;
   border-radius: 15px;
   box-shadow: 2px 2px 4px #00000040;
-  transition: all .3s;
-  animation: blink .8s ease-in-out infinite;
+  transition: all 0.3s;
+  animation: blink 0.8s ease-in-out infinite;
 
-  svg{
+  svg {
     width: 35px;
     height: 35px;
     transform: scaleX(-1);
@@ -129,7 +132,6 @@
   &:hover {
     animation: none;
   }
-
 }
 
 .myListRoom {

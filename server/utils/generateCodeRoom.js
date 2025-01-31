@@ -1,4 +1,5 @@
-import Room from '../models/Room.js';
+import { models } from "../config/database.js";
+const { Room } = models;
 
 const generateCodeRoom = async () => {
   const generateSixNumber = () => {

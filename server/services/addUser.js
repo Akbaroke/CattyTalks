@@ -1,4 +1,5 @@
-import User from '../models/User.js';
+import { models } from "../config/database.js";
+const { User } = models;
 
 const addUser = async (profile) => {
   const id = profile._json.sub;

@@ -9,12 +9,12 @@ import {
 } from '@tabler/icons-react'
 import { IconSend } from '@tabler/icons-react'
 import { useSelector } from 'react-redux'
-import getUnixTimestamp from '../../utils/unixTimestamp'
 import axios from '../../api'
 import ScrollToBottom from 'react-scroll-to-bottom'
 import epochToTime from '../../utils/epochToTime'
 import DefaultProfilePicture from '../../assets/DefaultProfilePicture.png'
 import useSWR, { mutate } from 'swr'
+import getUnixTimestamp from '../../utils/getUnixTimestamp'
 
 export default function Chat() {
   const navigate = useNavigate()
@@ -149,7 +149,15 @@ export default function Chat() {
               <p>{userCount} online</p>
             </div>
           </div>
-          <IconDotsVertical />
+          <div className={style.profile}>
+            <img
+              src={profilePicture}
+              alt={name}
+              title={name}
+              width={50}
+              height={50}
+            />
+          </div>
         </div>
         <ScrollToBottom className={style.body}>
           {messageList

@@ -7,7 +7,7 @@
     "dev": "vite",
     "test": "vitest",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview --port 3001"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.3",
