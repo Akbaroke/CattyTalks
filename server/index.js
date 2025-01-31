@@ -1,30 +1,30 @@
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 dotenv.config();
-import express from 'express';
-import http from 'http';
-import cors from 'cors';
-import passport from 'passport';
-import authRoute from './routes/auth.js';
-import roomRoute from './routes/room.js';
-import chatRoute from './routes/chat.js';
-import cookieSession from 'cookie-session';
-import db from './config/database.js';
-import './passport.js';
-import initSocket from './socket.js';
+import express from "express";
+import http from "http";
+import cors from "cors";
+import passport from "passport";
+import authRoute from "./routes/auth.js";
+import roomRoute from "./routes/room.js";
+import chatRoute from "./routes/chat.js";
+import cookieSession from "cookie-session";
+import { db } from "./config/database.js";
+import "./passport.js";
+import initSocket from "./socket.js";
 
 const app = express();
 
 try {
   db.authenticate();
-  console.log('Database is Connected...');
+  console.log("Database is Connected...");
 } catch (error) {
   console.log(error);
 }
 
 app.use(
   cookieSession({
-    name: 'session',
-    keys: ['cyberwolve'],
+    name: "session",
+    keys: ["cyberwolve"],
     maxAge: 24 * 60 * 60 * 100,
   })
 );
@@ -35,15 +35,15 @@ app.use(passport.session());
 app.use(
   cors({
     origin: process.env.CLIENT_URL,
-    methods: 'GET,POST,PUT,DELETE',
+    methods: "GET,POST,PUT,DELETE",
     credentials: true,
   })
 );
 
 app.use(express.json());
-app.use('/auth', authRoute);
-app.use('/room', roomRoute);
-app.use('/chat', chatRoute);
+app.use("/auth", authRoute);
+app.use("/room", roomRoute);
+app.use("/chat", chatRoute);
 
 const server = http.createServer(app);
 initSocket(server);

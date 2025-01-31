@@ -1,9 +1,7 @@
-import dotenv from 'dotenv';
-import Room from '../models/Room.js';
-import { v4 as uuidv4 } from 'uuid';
-import getUnixTimestamp from '../utils/unixTimeStamp.js';
-import Chat from '../models/Chat.js';
-import User from '../models/User.js';
+import dotenv from "dotenv";
+import getUnixTimestamp from "../utils/unixTimeStamp.js";
+import { models } from "../config/database.js";
+const { Chat, Room, User } = models;
 dotenv.config();
 
 export const getAllMessages = async (req, res) => {
@@ -52,7 +50,9 @@ export const getAllMessages = async (req, res) => {
     res.json(resDataNeeds);
   } catch (error) {
     console.log(error);
-    res.status(400).json({ msg: 'get message failed, please try again later.' });
+    res
+      .status(400)
+      .json({ msg: "get message failed, please try again later." });
   }
 };
 
@@ -75,10 +75,12 @@ export const addMessage = async (req, res) => {
       message: message,
       time: getUnixTimestamp(),
     });
-    res.json({ msg: 'message successfully sent.' });
+    res.json({ msg: "message successfully sent." });
   } catch (error) {
     console.log(error);
-    res.status(400).json({ msg: 'sent message failed, please try again later.' });
+    res
+      .status(400)
+      .json({ msg: "sent message failed, please try again later." });
   }
 };
 
@@ -91,7 +93,8 @@ export const deleteMessage = async (req, res) => {
     const qryChat = await Chat.findOne({
       id: id,
     });
-    if (qryChat.id_user !== userId) return res.status(401).json({ msg: 'this is not your message.' });
+    if (qryChat.id_user !== userId)
+      return res.status(401).json({ msg: "this is not your message." });
 
     await Chat.update(
       {
@@ -103,9 +106,11 @@ export const deleteMessage = async (req, res) => {
         },
       }
     );
-    res.json({ msg: 'message successfully deleted.' });
+    res.json({ msg: "message successfully deleted." });
   } catch (error) {
     console.log(error);
-    res.status(400).json({ msg: 'deleted message failed, please try again later.' });
+    res
+      .status(400)
+      .json({ msg: "deleted message failed, please try again later." });
   }
 };

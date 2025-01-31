@@ -1,31 +1,30 @@
-import { Sequelize } from 'sequelize';
-import db from '../config/database.js';
+import { DataTypes } from "sequelize";
 
-const { DataTypes } = Sequelize;
+const UserModel = (db) => {
+  return db.define(
+    "tb_user",
+    {
+      id: {
+        type: DataTypes.STRING,
+        primaryKey: true,
+        autoIncrement: false,
+      },
+      name: {
+        type: DataTypes.STRING,
+      },
+      email: {
+        type: DataTypes.STRING,
+        unique: true,
+      },
+      profile_picture: {
+        type: DataTypes.STRING,
+      },
+    },
+    {
+      freezeTableName: true,
+      timestamps: false,
+    }
+  );
+};
 
-const User = db.define(
-  'tb_user',
-  {
-    id: {
-      type: DataTypes.STRING,
-      primaryKey: true,
-      autoIncrement: false,
-    },
-    name: {
-      type: DataTypes.STRING,
-    },
-    email: {
-      type: DataTypes.STRING,
-      unique: true,
-    },
-    profile_picture: {
-      type: DataTypes.STRING,
-    },
-  },
-  {
-    freezeTableName: true,
-    timestamps: false,
-  }
-);
-
-export default User;
+export default UserModel;

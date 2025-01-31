@@ -1,4 +1,5 @@
-import User from '../models/User.js';
+import { models } from "../config/database.js";
+const { User } = models;
 
 export default async function cekUserId(req, res, next) {
   const { userId } = req.params;
@@ -10,7 +11,7 @@ export default async function cekUserId(req, res, next) {
     });
 
     if (!user) {
-      const error = new Error('Invalid User Id');
+      const error = new Error("ID Pengguna Tidak Valid");
       error.statusCode = 404;
       throw error;
     }
@@ -18,7 +19,7 @@ export default async function cekUserId(req, res, next) {
     next();
   } catch (error) {
     console.log(error);
-    next(error);
-    res.status(error.statusCode).json({ msg: error.message });
+    res.status(error.statusCode || 500).json({ msg: error.message });
+    next(error); // Lanjutkan error ke middleware berikutnya
   }
 }
