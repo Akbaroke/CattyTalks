@@ -1,8 +1,8 @@
 import dotenv from "dotenv";
 import { v4 as uuidv4 } from "uuid";
-import getUnixTimestamp from "../utils/unixTimeStamp.js";
 import generateCodeRoom from "../utils/generateCodeRoom.js";
 import { models } from "../config/database.js";
+import getUnixTimestamp from "../utils/getUnixTimestamp.js";
 const { Room, Join } = models;
 dotenv.config();
 

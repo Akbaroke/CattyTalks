@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
-import getUnixTimestamp from "../utils/unixTimeStamp.js";
 import { models } from "../config/database.js";
+import getUnixTimestamp from "../utils/getUnixTimestamp.js";
 const { Chat, Room, User } = models;
 dotenv.config();
 

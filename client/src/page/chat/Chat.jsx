@@ -9,12 +9,12 @@ import {
 } from '@tabler/icons-react'
 import { IconSend } from '@tabler/icons-react'
 import { useSelector } from 'react-redux'
-import getUnixTimestamp from '../../utils/unixTimestamp'
 import axios from '../../api'
 import ScrollToBottom from 'react-scroll-to-bottom'
 import epochToTime from '../../utils/epochToTime'
 import DefaultProfilePicture from '../../assets/DefaultProfilePicture.png'
 import useSWR, { mutate } from 'swr'
+import getUnixTimestamp from '../../utils/getUnixTimestamp'
 
 export default function Chat() {
   const navigate = useNavigate()
