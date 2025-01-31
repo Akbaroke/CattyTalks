@@ -149,7 +149,15 @@ export default function Chat() {
               <p>{userCount} online</p>
             </div>
           </div>
-          <IconDotsVertical />
+          <div className={style.profile}>
+            <img
+              src={profilePicture}
+              alt={name}
+              title={name}
+              width={50}
+              height={50}
+            />
+          </div>
         </div>
         <ScrollToBottom className={style.body}>
           {messageList

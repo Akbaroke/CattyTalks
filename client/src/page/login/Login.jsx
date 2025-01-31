@@ -1,4 +1,4 @@
-import Container from '../../components/container/Container';
+import Container from '../../components/container/Container'
 import style from './style.module.scss'
 import googleIcon from '../../assets/google.svg'
 import React, { useEffect } from 'react'
@@ -12,7 +12,7 @@ export default function Login() {
 
   useEffect(() => {
     if (isAuth) {
-      navigate('/')
+      navigate('/', { replace: true })
     }
   }, [isAuth])
 

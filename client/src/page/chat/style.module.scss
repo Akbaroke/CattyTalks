@@ -12,6 +12,13 @@
   justify-content: space-between;
   padding: 20px;
   align-items: center;
+  border-bottom: 1px solid #eaeaea;
+
+  .profile {
+    border: 1px solid #000;
+    border-radius: 50%;
+    overflow: hidden;
+  }
 
   .label {
     display: flex;
@@ -30,34 +37,34 @@
       p:nth-of-type(1) {
         font-size: 14px;
         font-weight: 600;
-        letter-spacing: -.1mm;
+        letter-spacing: -0.1mm;
       }
 
       p:nth-of-type(2) {
         font-size: 12px;
-        letter-spacing: -.1mm;
+        letter-spacing: -0.1mm;
       }
     }
   }
 }
-
 
 .body {
   height: 100vh;
   overflow-y: auto;
   overflow-x: hidden;
   padding-bottom: 150px;
+  padding-top: 20px;
 
-  &>button{
+  & > button {
     position: absolute;
     bottom: 180px;
     width: 25px;
     height: 25px;
-    background-color: #49BFB7;
+    background-color: #49bfb7;
     border-radius: 50%;
     box-shadow: 1px 1px 4px #00000040;
-    
-    &::before{
+
+    &::before {
       content: '';
       display: block;
       position: absolute;
@@ -72,7 +79,7 @@
     }
   }
 
-  &>div:nth-of-type(1) {
+  & > div:nth-of-type(1) {
     padding: 0 20px;
     padding-bottom: 50px;
     display: flex;
@@ -94,13 +101,13 @@
         border: 1px solid #fff;
         border-radius: 50%;
         box-shadow: 0 4px 4px #00000040;
-        background-color: #49BFB7;
+        background-color: #49bfb7;
       }
 
-      &>div {
+      & > div {
         display: inline;
 
-        &>div {
+        & > div {
           display: flex;
           justify-content: space-between;
           margin-bottom: 4px;
@@ -121,7 +128,7 @@
           }
         }
 
-        &>p {
+        & > p {
           background-color: #fff;
           padding: 16px;
           border-radius: 0 20px 20px 20px;
@@ -143,15 +150,15 @@
       flex-direction: column;
       gap: 4px;
 
-      &>p:nth-of-type(1) {
+      & > p:nth-of-type(1) {
         font-size: 12px;
         color: #000;
         text-transform: capitalize;
         font-weight: 400;
       }
 
-      &>p:nth-of-type(2){
-        background-color: #49BFB7;
+      & > p:nth-of-type(2) {
+        background-color: #49bfb7;
         color: #fff;
         padding: 16px;
         border-radius: 20px 20px 0 20px;
@@ -177,7 +184,11 @@
   padding: 20px;
   position: sticky;
   bottom: 0;
-  background: linear-gradient(358.05deg, #FFFFFF 72.94%, rgba(255, 255, 255, 0) 93.52%);
+  background: linear-gradient(
+    358.05deg,
+    #ffffff 72.94%,
+    rgba(255, 255, 255, 0) 93.52%
+  );
 
   textarea {
     flex-grow: 1;
@@ -190,7 +201,7 @@
     resize: none;
     height: 50px;
 
-    &::-webkit-scrollbar{
+    &::-webkit-scrollbar {
       width: 0;
     }
   }
@@ -199,12 +210,12 @@
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    background-color: #49BFB7;
+    background-color: #49bfb7;
     border: 1px solid #000;
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: all .3s;
+    transition: all 0.3s;
     cursor: pointer;
 
     svg {

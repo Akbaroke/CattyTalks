@@ -109,16 +109,7 @@ export default function Home() {
             <div
               className={style.logo}
               onClick={reloadPage}>
-              <img
-                src="https://cdn.discordapp.com/attachments/1044968598587838586/1082668734986063883/logo_3_1asas.png"
-                alt="Catty Talks"
-                width={130}
-              />
-              <img
-                src="https://cdn.discordapp.com/attachments/1044968598587838586/1082669520201723914/logo_1.png"
-                alt="Catty Talks"
-                width={40}
-              />
+              <h1>Chatty Talks</h1>
             </div>
             <IconLogout onClick={handleLogout} />
           </div>
